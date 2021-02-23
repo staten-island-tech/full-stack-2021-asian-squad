@@ -20,5 +20,17 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1"
-  }
+  },
+  "description": "```bash\r # install dependencies\r $ npm install",
+  "main": "nuxt.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staten-island-tech/full-stack-2021-asian-squad.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/staten-island-tech/full-stack-2021-asian-squad/issues"
+  },
+  "homepage": "https://github.com/staten-island-tech/full-stack-2021-asian-squad#readme"
 }
