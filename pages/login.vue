@@ -17,21 +17,27 @@
         label-placeholder="Password"
         v-model="pass"
       />
-      <vs-input
+      <vs-checkbox v-model="option">Remember Me</vs-checkbox>
+      <vs-button
+        color="#1F1F1F"
         class="flex-items"
         type="submit"
-        value="Sign In"
         @click="checkLogin()"
-      />
-      <vs-input
+        >Sign In</vs-button
+      >
+      <vs-button
+        color="#1F1F1F"
         class="flex-items"
         type="submit"
-        value="Sign in with Google"
         @click="checkLogin()"
-      />
+        >Sign in with Google</vs-button
+      >
+      <div class="create">
+        <p>Don't have an account? <a href=""> Create a new one</a></p>
+
+      </div>
     </form>
-    <div class="background">
-    </div>
+    <div class="background"></div>
   </div>
 </template>
 
@@ -42,6 +48,7 @@ export default {
     return {
       email: '',
       pass: '',
+      option: false,
     }
   },
   methods: {
@@ -50,6 +57,7 @@ export default {
         .signInWithEmailAndPassword(this.email, this.pass)
         .then((userCredential) => {
           alert(`Signed in as ${userCredential.user.uid}!`)
+          this.$router.push('/')
         })
         .catch((error) => {
           alert(error.message)
@@ -59,7 +67,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Nova+Round&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
@@ -110,7 +118,17 @@ form {
 
 .flex-items {
   margin: 2rem;
-  transform: scale(1.25);
+  transform: scale(1.35);
   /* width: 15rem; */
+}
+
+.create {
+  display: flex;
+  flex-direction: row;
+  color: #555555;
+  a {
+    color: #000;
+    text-decoration: none;
+  }
 }
 </style>
