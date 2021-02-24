@@ -40,7 +40,13 @@ export default {
       measurementId: 'G-KH82K5LGVK',
     },
     services: {
-      auth: true,
+      auth: {
+        persistence: 'local',
+        initialize: {
+          onAuthStateChangedMutation: 'user/ON_AUTH_STATE_CHANGED_MUTATION',
+          // onAuthStateChangedAction: 'ON_AUTH_STATE_CHANGED_ACTION',
+        }
+      },
       firestore: true,
     },
   },

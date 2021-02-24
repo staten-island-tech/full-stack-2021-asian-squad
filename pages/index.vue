@@ -62,6 +62,8 @@
           GitHub
         </a>
       </div>
+    <h1 v-if="loginStatus">Signed In as {{ userUID }}</h1>
+    <h1 v-else>Not Signed In</h1>
     </div>
   </div>
 </template>
@@ -74,7 +76,16 @@ export default {
   components: {
     Logo,
     VuesaxLogo
+  },
+  computed: {
+    loginStatus () {
+      return this.$store.state.user.loggedIn
+    },
+    userUID () {
+      return this.$store.state.user.userData.uid
+    }
   }
+
 }
 </script>
 
