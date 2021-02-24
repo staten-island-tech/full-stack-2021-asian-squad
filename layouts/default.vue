@@ -1,20 +1,37 @@
 <template>
   <div>
+    <vs-navbar>
+      <template #left>
+        <vs-button to="/">Home</vs-button>
+      </template>
+      <template #right>
+        <vs-button to="/login">Sign In</vs-button>
+        <vs-button :disabled="!loginStatus" @click="logOut">Log Out</vs-button>
+      </template>
+    </vs-navbar>
     <Nuxt />
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    loginStatus() {
+      return this.$store.state.user.loggedIn
+    },
+  },
+  methods: {
+    logOut: function () {
+      this.$fire.auth.signOut()
+    },
+  },
+}
+</script>
+
 <style>
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
