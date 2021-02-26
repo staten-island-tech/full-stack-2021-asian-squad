@@ -30,7 +30,7 @@
         icon-after
         type='password'
         label-placeholder='Confirm Password'
-        v-model='pass'
+        v-model='passConfirm'
       >
         <template #icon>
           <i class='bx bx-check-shield'></i>
