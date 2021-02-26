@@ -1,27 +1,40 @@
 <template>
   <div class='login-content'>
     <h1>Bone Apple Teeth</h1>
-    <h2>Sign In</h2>
+    <h2>Log In</h2>
     <form @submit.prevent>
       <vs-input
         class='flex-items'
+        icon-after
         type='text'
         label-placeholder='Email'
         v-model='email'
-      />
+      >
+        <template #icon>
+          <i class='bx bx-envelope'></i>
+        </template>
+      </vs-input>
       <vs-input
         class='flex-items'
+        icon-after
         type='password'
         label-placeholder='Password'
         v-model='pass'
-      />
+        @click-icon='passVisible = !passVisible'
+        :visible-password='passVisible'
+      >
+        <template #icon>
+          <i v-if='!passVisible' class='bx bx-lock'></i>
+          <i v-else class='bx bx-show'></i>
+        </template>
+      </vs-input>
       <vs-checkbox v-model='rememberMe'>Remember Me</vs-checkbox>
       <vs-button
         color='#1F1F1F'
         class='flex-items'
         type='submit'
         @click='emailLogin()'
-      >Sign In
+      >Log In
       </vs-button
       >
       <vs-button
@@ -29,11 +42,12 @@
         class='flex-items'
         type='submit'
         @click='googleLogin()'
-      ><i class='bx bxl-google'></i> &nbsp; Sign in with Google
+      ><i class='bx bxl-google'></i> &nbsp; Log in with Google
       </vs-button
       >
       <div class='create'>
-        <p>Don't have an account? <a href=''> Create a new one</a></p>
+        <span>Don't have an account?</span>
+        <vs-button size='large' dark transparent to='/signup'>Create one</vs-button>
       </div>
     </form>
   </div>
@@ -57,7 +71,8 @@ export default {
   data() {
     return {
       email: '',
-      pass: ''
+      pass: '',
+      passVisible: false
     }
   },
   methods: {
@@ -138,8 +153,12 @@ form {
 }
 
 .create {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-top: 2rem;
   color: #555555;
+
   a {
     color: #000;
     text-decoration: none;

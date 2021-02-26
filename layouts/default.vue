@@ -33,9 +33,12 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Nova+Round&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
-html {
+* {
   font-family: 'Nova Round', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-  Roboto, 'Helvetica Neue', Arial, sans-serif;
+  Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+html {
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
