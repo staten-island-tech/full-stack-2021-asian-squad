@@ -10,13 +10,31 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
+    "@nuxtjs/firebase": "^7.4.1",
+    "boxicons": "^2.0.7",
     "core-js": "^3.8.2",
+    "firebase": "^8.2.7",
     "nuxt": "^2.14.12",
     "vuesax": "^4.0.1-alpha.25"
   },
   "devDependencies": {
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1"
-  }
+    "fibers": "^5.0.0",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.8",
+    "sass-loader": "^10.1.1"
+  },
+  "description": "```bash\r # install dependencies\r $ npm install",
+  "main": "nuxt.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/staten-island-tech/full-stack-2021-asian-squad.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/staten-island-tech/full-stack-2021-asian-squad/issues"
+  },
+  "homepage": "https://github.com/staten-island-tech/full-stack-2021-asian-squad#readme"
 }

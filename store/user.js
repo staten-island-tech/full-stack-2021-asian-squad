@@ -1,0 +1,29 @@
+export const state = () => ({
+  loggedIn: false,
+  userData: null,
+  rememberedEmail: '',
+  rememberMe: false
+})
+
+export const mutations = {
+  ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims }) {
+    if (!authUser) {
+      state.loggedIn = false
+      state.userData = null
+      claims = null
+    } else {
+      const { uid, email, emailVerified } = authUser
+      state.userData = { uid, email, emailVerified }
+      state.loggedIn = true
+    }
+  },
+  recordRememberedEmail(state, newEmail) {
+    if (state.rememberMe)
+      state.rememberedEmail = newEmail
+    else
+      state.rememberedEmail = ''
+  },
+  updateRemPref(state, value) {
+    state.rememberMe = value
+  }
+}

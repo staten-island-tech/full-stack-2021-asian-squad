@@ -1,20 +1,44 @@
 <template>
   <div>
+    <vs-navbar dark>
+      <template #left>
+        <vs-button to='/'>Home</vs-button>
+      </template>
+      <template #right>
+        <vs-button v-if='!loginStatus' to='/login'>Sign In</vs-button>
+        <vs-button v-else @click='logOut'>Log Out</vs-button>
+      </template>
+    </vs-navbar>
+    <div class='bg'></div>
     <Nuxt />
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    loginStatus() {
+      return this.$store.state.user.loggedIn
+    }
+  },
+  methods: {
+    logOut: function() {
+      this.$fire.auth.signOut()
+    }
+  }
+}
+</script>
+
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Nova+Round&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+* {
+  font-family: 'Nova Round', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -31,32 +55,13 @@ html {
   margin: 0;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.bg {
+  position: absolute;
+  z-index: -1;
+  background-size: cover;
+  background-color: #f5a6a6;
+  clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0% 100%);
+  height: 100vh;
+  width: 100vw;
 }
 </style>
