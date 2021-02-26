@@ -1,6 +1,8 @@
 export const state = () => ({
   loggedIn: false,
   userData: null,
+  rememberedEmail: '',
+  rememberMe: false
 })
 
 export const mutations = {
@@ -15,4 +17,13 @@ export const mutations = {
       state.loggedIn = true
     }
   },
+  recordRememberedEmail(state, newEmail) {
+    if (state.rememberMe)
+      state.rememberedEmail = newEmail
+    else
+      state.rememberedEmail = ''
+  },
+  updateRemPref(state, value) {
+    state.rememberMe = value
+  }
 }
