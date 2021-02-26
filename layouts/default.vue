@@ -1,5 +1,9 @@
 <template>
   <div>
+    <nuxt-link to="dashboard">Dashboard</nuxt-link>
+    <nuxt-link to="newUser">New User</nuxt-link>
+    <nuxt-link to="viewUser">View User</nuxt-link>
+    <nuxt-link to="/">Home</nuxt-link>
     <Nuxt />
   </div>
 </template>

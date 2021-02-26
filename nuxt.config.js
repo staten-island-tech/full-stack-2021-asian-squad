@@ -33,11 +33,30 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-  ],
+  modules: ['@nuxtjs/axios', '@nuxtjs/firebase'],
 
+      firebase: {
+        config: {
+          apiKey: 'AIzaSyBQ8qyDb_NCgq6dPaolSdtBlqTuFiUW5h4',
+          databaseURL: 'https://bone-apple-teeth-default-rtdb.firebaseio.com/',
+          authDomain: 'bone-apple-teeth.firebaseapp.com',
+          projectId: 'bone-apple-teeth',
+          storageBucket: 'bone-apple-teeth.appspot.com',
+          messagingSenderId: '738508615418',
+          appId: '1:738508615418:web:5c78943bda4006914e6343',
+          measurementId: 'G-KH82K5LGVK',
+        },
+        services: {
+          auth: {
+            persistence: 'local',
+            initialize: {
+              onAuthStateChangedMutation: 'user/ON_AUTH_STATE_CHANGED_MUTATION',
+              // onAuthStateChangedAction: 'ON_AUTH_STATE_CHANGED_ACTION',
+            }
+          },
+          firestore: true,
+        },
+      },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
