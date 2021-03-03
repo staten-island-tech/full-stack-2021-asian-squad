@@ -28,26 +28,31 @@
           <i v-else class='bx bx-show'></i>
         </template>
       </vs-input>
-      <vs-checkbox v-model='rememberMe'>Remember Me</vs-checkbox>
+      <vs-checkbox dark v-model='rememberMe'>Remember Me</vs-checkbox>
+      <vs-button size='large' type='button' dark transparent to='/forgot'
+      >Forgot Password?
+      </vs-button
+      >
       <vs-button
         color='#1F1F1F'
         class='flex-items'
         type='submit'
         @click='emailLogin()'
       >Log In
-      </vs-button
-      >
+      </vs-button>
       <vs-button
         color='#1F1F1F'
         class='flex-items'
         type='submit'
         @click='googleLogin()'
       ><i class='bx bxl-google'></i> &nbsp; Log in with Google
-      </vs-button
-      >
+      </vs-button>
       <div class='create'>
         <span>Don't have an account?</span>
-        <vs-button size='large' dark transparent to='/signup'>Create one</vs-button>
+        <vs-button size='large' dark transparent to='/signup'
+        >Create one
+        </vs-button
+        >
       </div>
     </form>
   </div>
@@ -134,7 +139,6 @@ h2 {
   font-size: 2rem;
   margin-right: 10rem;
   margin-top: 5rem;
-
   z-index: 3;
 }
 

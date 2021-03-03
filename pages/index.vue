@@ -25,10 +25,11 @@ export default {
 }
 </script>
 
-<style>
+<style lang='scss' scoped>
 .container {
+  position: relative;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
