@@ -53,7 +53,4 @@ html {
   height: 100vh;
   width: 100vw;
 }
-
-.nuxt-container {
-}
 </style>
