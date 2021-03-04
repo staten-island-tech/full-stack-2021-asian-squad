@@ -60,6 +60,8 @@
 
 <script>
 export default {
+  name: 'Login',
+  middleware: 'guestCheck',
   computed: {
     // set getters and setters for remember me button
     // to sync real-time with vuex store

@@ -1,6 +1,6 @@
+// redirects user back to homepage if already logged in
 export default function ({ store, redirect }) {
-  const user = store.state.user
-  if (user.loggedIn) {
+  if (store.state.user.loggedIn) {
     return redirect('/')
   }
 }

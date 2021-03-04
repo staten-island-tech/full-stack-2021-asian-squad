@@ -1,11 +1,5 @@
-// export default function ({ store, redirect }) {
-//   if (!store.state.user.loggedIn) {
-//     return redirect('/login')
-//   }
-// }
-
-export default function({ redirect }) {
-  const store = JSON.parse(localStorage.getItem('vuex'))
+// redirects user to login page if not logged in
+export default function ({ store, redirect }) {
   if (!store.state.user.loggedIn) {
     return redirect('/login')
   }

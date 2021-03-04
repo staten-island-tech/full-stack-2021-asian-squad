@@ -18,8 +18,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ['@/plugins/vuesax',
-    { src: '~/plugins/persistedState.client.js', mode: 'client' },
-    { src: '~/plugins/authGuard.client.js', mode: 'client' }
+    { src: '~/plugins/persistedState.js' }
   ],
 
 // Auto import components: https://go.nuxtjs.dev/config-components
