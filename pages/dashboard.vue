@@ -1,6 +1,6 @@
 <template>
   <div id="dashboard">
-    <h3>{{users.id}}</h3>
+    <h3>{{users[0].id}}</h3>
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
             'udescription': doc.data().udescription,
           }
           this.users.push(data)
+          console.log(data)
         })
       })
   },

@@ -50,7 +50,7 @@ export default {
           auth: {
             persistence: 'local',
             initialize: {
-              onAuthStateChangedMutation: 'user/ON_AUTH_STATE_CHANGED_MUTATION',
+              // onAuthStateChangedMutation: 'user/ON_AUTH_STATE_CHANGED_MUTATION',
               // onAuthStateChangedAction: 'ON_AUTH_STATE_CHANGED_ACTION',
             }
           },
