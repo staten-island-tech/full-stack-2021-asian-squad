@@ -1,14 +1,14 @@
 <template>
   <vs-navbar shadow square>
     <template #left>
-      <vs-button to='/'>Home</vs-button>
+      <vs-button dark to='/'>Home</vs-button>
     </template>
     <template #right>
-      <vs-button :disabled='!loggedIn' to='/create'>
+      <vs-button dark :disabled='!loggedIn' to='/create'>
         <i class='bx bx-plus'></i> &nbsp; Create New Recipe
       </vs-button>
-      <vs-button v-if='!loggedIn' to='/login'>Sign In</vs-button>
-      <vs-button v-else @click='logOut'>Log Out</vs-button>
+      <vs-button dark v-if='!loggedIn' to='/login'>Sign In</vs-button>
+      <vs-button dark v-else @click='logOut'>Log Out</vs-button>
     </template>
   </vs-navbar>
 </template>

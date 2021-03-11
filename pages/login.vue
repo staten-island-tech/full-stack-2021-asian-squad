@@ -121,7 +121,6 @@ export default {
 <style lang='scss' scoped>
 .login-content {
   position: relative;
-  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -130,7 +129,7 @@ export default {
 }
 
 h1 {
-  margin-top: 5rem;
+  margin-top: 3rem;
   font-size: 2.5rem;
   display: block;
   z-index: 3;
