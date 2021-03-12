@@ -17,6 +17,17 @@
       <vs-input
         class='flex-items'
         icon-after
+        type='text'
+        label-placeholder='Name'
+        v-model='name'
+      >
+        <template #icon>
+          <i class='bx bx-user'></i>
+        </template>
+      </vs-input>
+      <vs-input
+        class='flex-items'
+        icon-after
         type='password'
         label-placeholder='Password'
         v-model='pass'
@@ -66,6 +77,7 @@ export default {
   data() {
     return {
       email: '',
+      name: '',
       pass: '',
       passConfirm: ''
     }
@@ -77,9 +89,13 @@ export default {
         alert('Passwords do not match.')
         return
       }
+
       this.$fire.auth
         .createUserWithEmailAndPassword(this.email, this.pass)
         .then(() => {
+          // create firestore entry
+          this.$addUser(this.name, this.email)
+          // bump user to home
           this.$router.push('/')
         })
         .catch((error) => {
@@ -92,6 +108,7 @@ export default {
       this.$fire.auth
         .signInWithPopup(provider)
         .then(() => {
+          this.$addUser(this.name, this.email)
           this.$router.push('/')
         })
         .catch((error) => {
@@ -105,7 +122,6 @@ export default {
 <style lang='scss' scoped>
 .login-content {
   position: relative;
-  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -114,7 +130,7 @@ export default {
 }
 
 h1 {
-  margin-top: 5rem;
+  margin-top: 1.5rem;
   font-size: 2.5rem;
   display: block;
   z-index: 3;
@@ -123,8 +139,7 @@ h1 {
 h2 {
   font-size: 2rem;
   margin-right: 10rem;
-  margin-top: 5rem;
-
+  margin-top: 3rem;
   z-index: 3;
 }
 

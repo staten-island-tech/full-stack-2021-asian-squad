@@ -66,7 +66,7 @@ export default {
         ingredients: this.ingredients,
         instructions: this.instructions,
         tags: this.tags
-      }).then(console.log("uploaded")).catch(error => console.log(err))
+      }).then(console.log("uploaded")).catch(err => console.log(err))
     }
   }
 }
