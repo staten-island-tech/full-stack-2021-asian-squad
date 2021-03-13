@@ -1,7 +1,8 @@
-export default ({ app }, inject) => {
-  inject('addUser', async (name, email) => {
+export default ({ app, store }, inject) => {
+  inject('addUser', async (id, dsname, email) => {
+    // adds new user onto firestore
     const user = {
-      uname: name,
+      uname: dsname,
       uimg: 'placeholder',
       uemail: email,
       udisc: '',
@@ -11,14 +12,30 @@ export default ({ app }, inject) => {
       shopping_list: []
     }
 
-    const ref = app.$fire.firestore
-      .collection('users')
+    const ref = app.$fire.firestore.collection('users').doc(id)
 
     try {
-      const res = await ref.add(user)
-      console.log(`New user ${name} successfully created: ${res}`)
+      await ref.set(user)
+      console.log(`New user "${dsname}" successfully created`)
     } catch (e) {
       console.error(e)
     }
+    // add new data onto vuex store
+    store.commit('user/setUserData', user)
+  })
+
+  inject('getUser', async (id, pushStore = true) => {
+    // returns user information stored from firestore, and puts it on vuex by default
+    const ref = app.$fire.firestore.collection('users').doc(id)
+
+    let user
+    try {
+      user = await ref.get()
+    } catch (e) {
+      console.error(e)
+    }
+
+    if (pushStore) store.commit('user/setUserData', user)
+    return user
   })
 }

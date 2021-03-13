@@ -12,7 +12,7 @@ export default {
       return this.$store.state.user.loggedIn
     },
     userUID() {
-      return this.$store.state.user.userData.uid
+      return this.$store.state.user.authData.uid
     },
   },
 }

@@ -31,8 +31,7 @@
       <vs-checkbox dark v-model='rememberMe'>Remember Me</vs-checkbox>
       <vs-button size='large' type='button' dark transparent to='/forgot'
       >Forgot Password?
-      </vs-button
-      >
+      </vs-button>
       <vs-button
         color='#1F1F1F'
         class='flex-items'
@@ -51,8 +50,7 @@
         <span>Don't have an account?</span>
         <vs-button size='large' dark transparent to='/signup'
         >Create one
-        </vs-button
-        >
+        </vs-button>
       </div>
     </form>
   </div>
@@ -70,7 +68,7 @@ export default {
         return this.$store.state.user.rememberMe
       },
       set(value) {
-        this.$store.commit('user/updateRemPref', value)
+        this.$store.commit('user/setRemPref', value)
       }
     }
   },
@@ -86,7 +84,9 @@ export default {
       // standard email + password login
       this.$fire.auth
         .signInWithEmailAndPassword(this.email, this.pass)
-        .then(() => {
+        .then((result) => {
+          // push user info into vuex and bump to homepage w/ helper
+          this.$getUser(result.user.uid)
           this.$router.push('/')
         })
         .catch((error) => {
@@ -98,7 +98,15 @@ export default {
       const provider = new this.$fireModule.default.auth.GoogleAuthProvider()
       this.$fire.auth
         .signInWithPopup(provider)
-        .then(() => {
+        .then((result) => {
+          const { uid, displayName, email } = result.user
+          if (result.additionalUserInfo.isNewUser) {
+            // add user to the firestore if new google log-in
+            this.$addUser(uid, displayName, email)
+          } else {
+            // else load existing user data into vuex w/ helper
+            this.$getUser(uid)
+          }
           this.$router.push('/')
         })
         .catch((error) => {
@@ -138,7 +146,7 @@ h1 {
 h2 {
   font-size: 2rem;
   margin-right: 10rem;
-  margin-top: 5rem;
+  margin-top: 3rem;
   z-index: 3;
 }
 
