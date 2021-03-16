@@ -11,8 +11,9 @@ export default ({ store, req, isDev }) => {
         // use cookies in request headers if in server
         if (process.server) {
           // return nothing if cookies not present
+          if (!(req && req.headers && req.headers.cookie)) return
           const reqCookies = req.headers.cookie
-          if (!reqCookies) return
+          // if (!reqCookies) return
           // parse + return cookies if present
           const parsedCookies = cookie.parse(reqCookies)
           return parsedCookies[key]
