@@ -1,8 +1,8 @@
 <template>
-  <div class='master-container'>
-    <div class='bg'></div>
+  <div class="master-container">
+    <div class="bg"></div>
     <Navbar />
-    <div class='nuxt-container'>
+    <div class="nuxt-container">
       <Nuxt />
     </div>
   </div>
@@ -13,7 +13,7 @@ import Navbar from '@/components/Navbar'
 
 export default {
   components: {
-    Navbar
+    Navbar,
   },
 }
 </script>
@@ -23,8 +23,8 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 * {
-  font-family: 'Nova Round', 'Source Sans Pro', -apple-system,
-  BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
 html {

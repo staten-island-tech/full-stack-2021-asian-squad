@@ -3,7 +3,7 @@ export const state = () => ({
   authData: undefined,
   userData: undefined,
   rememberedEmail: '',
-  rememberMe: false
+  rememberMe: false,
 })
 
 export const mutations = {
@@ -20,15 +20,13 @@ export const mutations = {
     }
   },
   recordRememberedEmail(state, newEmail) {
-    if (state.rememberMe)
-      state.rememberedEmail = newEmail
-    else
-      state.rememberedEmail = ''
+    if (state.rememberMe) state.rememberedEmail = newEmail
+    else state.rememberedEmail = ''
   },
   setRemPref(state, value) {
     state.rememberMe = value
   },
   setUserData(state, user) {
     state.userData = user
-  }
+  },
 }
