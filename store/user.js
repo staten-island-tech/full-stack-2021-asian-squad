@@ -1,6 +1,7 @@
 export const state = () => ({
   loggedIn: false,
-  userData: null,
+  authData: undefined,
+  userData: undefined,
   rememberedEmail: '',
   rememberMe: false
 })
@@ -9,11 +10,12 @@ export const mutations = {
   ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims }) {
     if (!authUser) {
       state.loggedIn = false
-      state.userData = null
+      state.authData = undefined
+      state.userData = undefined
       claims = null
     } else {
       const { uid, email, emailVerified } = authUser
-      state.userData = { uid, email, emailVerified }
+      state.authData = { uid, email, emailVerified }
       state.loggedIn = true
     }
   },
@@ -23,7 +25,10 @@ export const mutations = {
     else
       state.rememberedEmail = ''
   },
-  updateRemPref(state, value) {
+  setRemPref(state, value) {
     state.rememberMe = value
+  },
+  setUserData(state, user) {
+    state.userData = user
   }
 }

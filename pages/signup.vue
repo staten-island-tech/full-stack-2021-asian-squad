@@ -1,60 +1,62 @@
 <template>
-  <div class='login-content'>
+  <div class="login-content">
     <h1>Bone Apple Teeth</h1>
     <h2>Sign Up</h2>
     <form @submit.prevent>
       <vs-input
-        class='flex-items'
+        class="flex-items"
         icon-after
-        type='text'
-        label-placeholder='Email'
-        v-model='email'
+        type="text"
+        label-placeholder="Email"
+        v-model="email"
       >
         <template #icon>
-          <i class='bx bx-envelope'></i>
+          <i class="bx bx-envelope"></i>
         </template>
       </vs-input>
       <vs-input
-        class='flex-items'
+        class="flex-items"
         icon-after
-        type='password'
-        label-placeholder='Password'
-        v-model='pass'
+        type="text"
+        label-placeholder="Display Name"
+        v-model="dsname"
       >
         <template #icon>
-          <i class='bx bx-lock'></i>
+          <i class="bx bx-user"></i>
         </template>
       </vs-input>
       <vs-input
-        class='flex-items'
+        class="flex-items"
         icon-after
-        type='password'
-        label-placeholder='Confirm Password'
-        v-model='passConfirm'
+        type="password"
+        label-placeholder="Password"
+        v-model="pass"
       >
         <template #icon>
-          <i class='bx bx-check-shield'></i>
+          <i class="bx bx-lock"></i>
+        </template>
+      </vs-input>
+      <vs-input
+        class="flex-items"
+        icon-after
+        type="password"
+        label-placeholder="Confirm Password"
+        v-model="passConfirm"
+      >
+        <template #icon>
+          <i class="bx bx-check-shield"></i>
         </template>
       </vs-input>
       <vs-button
-        color='#1F1F1F'
-        class='flex-items'
-        type='submit'
-        @click='emailSignUp()'
-      >Sign Up
-      </vs-button
-      >
-      <vs-button
-        color='#1F1F1F'
-        class='flex-items'
-        type='submit'
-        @click='googleLogin()'
-      ><i class='bx bxl-google'></i> &nbsp; Sign up with Google
-      </vs-button
-      >
-      <div class='create'>
+        color="#1F1F1F"
+        class="flex-items"
+        type="submit"
+        @click="emailSignUp()"
+        >Sign Up
+      </vs-button>
+      <div class="create">
         <span>Have an account?</span>
-        <vs-button size='large' dark transparent to='/login'>Log In</vs-button>
+        <vs-button size="large" dark transparent to="/login">Log In</vs-button>
       </div>
     </form>
   </div>
@@ -66,46 +68,38 @@ export default {
   data() {
     return {
       email: '',
+      dsname: '',
       pass: '',
-      passConfirm: ''
+      passConfirm: '',
     }
   },
   methods: {
-    emailSignUp: function() {
+    emailSignUp: function () {
       // standard email + password signup w/ confirmation
       if (this.pass !== this.passConfirm) {
         alert('Passwords do not match.')
         return
       }
+
       this.$fire.auth
         .createUserWithEmailAndPassword(this.email, this.pass)
-        .then(() => {
+        .then((result) => {
+          // create firestore entry using helper
+          this.$addUser(result.user.uid, this.dsname, this.email)
+          // bump user to home
           this.$router.push('/')
         })
         .catch((error) => {
           alert(error.message)
         })
     },
-    googleLogin: function() {
-      // google login popup
-      const provider = new this.$fireModule.default.auth.GoogleAuthProvider()
-      this.$fire.auth
-        .signInWithPopup(provider)
-        .then(() => {
-          this.$router.push('/')
-        })
-        .catch((error) => {
-          alert(error.message)
-        })
-    }
-  }
+  },
 }
 </script>
 
 <style lang='scss' scoped>
 .login-content {
   position: relative;
-  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -114,7 +108,7 @@ export default {
 }
 
 h1 {
-  margin-top: 5rem;
+  margin-top: 3rem;
   font-size: 2.5rem;
   display: block;
   z-index: 3;
@@ -123,8 +117,7 @@ h1 {
 h2 {
   font-size: 2rem;
   margin-right: 10rem;
-  margin-top: 5rem;
-
+  margin-top: 3rem;
   z-index: 3;
 }
 

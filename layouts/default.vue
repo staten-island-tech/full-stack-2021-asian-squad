@@ -1,31 +1,20 @@
 <template>
-  <div>
-    <vs-navbar dark>
-      <template #left>
-        <vs-button to='/'>Home</vs-button>
-      </template>
-      <template #right>
-        <vs-button v-if='!loginStatus' to='/login'>Sign In</vs-button>
-        <vs-button v-else @click='logOut'>Log Out</vs-button>
-      </template>
-    </vs-navbar>
+  <div class='master-container'>
     <div class='bg'></div>
-    <Nuxt />
+    <Navbar />
+    <div class='nuxt-container'>
+      <Nuxt />
+    </div>
   </div>
 </template>
 
 <script>
+import Navbar from '@/components/Navbar'
+
 export default {
-  computed: {
-    loginStatus() {
-      return this.$store.state.user.loggedIn
-    }
+  components: {
+    Navbar
   },
-  methods: {
-    logOut: function() {
-      this.$fire.auth.signOut()
-    }
-  }
 }
 </script>
 
@@ -34,8 +23,8 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 * {
-  font-family: 'Nova Round', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-  Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-family: 'Nova Round', 'Source Sans Pro', -apple-system,
+  BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
 html {
