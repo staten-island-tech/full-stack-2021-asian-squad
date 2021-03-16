@@ -1,48 +1,48 @@
 <template>
-  <div class="format">
+  <div class='format'>
     <h1>Create New Recipe</h1>
     <vs-button circle icon floating
-    color='#1F1F1F'>
-      <i class="bx bx-plus"></i>
+               color='#1F1F1F'>
+      <i class='bx bx-plus'></i>
     </vs-button>
 
-    <form @submit.prevent="createRecipe">
-    <div class="inputs">
-      <div class="center content-inputs">
-        <vs-input label-placeholder="Recipe Name" v-model="name" />
+    <form @submit.prevent='createRecipe'>
+      <div class='inputs'>
+        <div class='center content-inputs'>
+          <vs-input label-placeholder='Recipe Name' v-model='name' />
+        </div>
+
+        <div class='center content-inputs'>
+          <vs-input label-placeholder='Add Ingredients' v-model='ingredients' />
+        </div>
+
+        <div class='center content-inputs'>
+          <vs-input label-placeholder='Add Instructions' v-model='instructions' />
+        </div>
+
+        <div class='center content-inputs'>
+          <vs-input label-placeholder='Add Additional Tags' v-model='tags' />
+        </div>
       </div>
 
-      <div class="center content-inputs">
-        <vs-input label-placeholder="Add Ingredients" v-model="ingredients" />
+      <div class='upload'>
+        <vs-button
+          color='#1F1F1F'
+          size='large'
+          class='flex-items'
+          type='submit'
+        >
+          Preview
+        </vs-button>
+        <vs-button
+          color='#1F1F1F'
+          size='large'
+          class='flex-items'
+          type='submit'
+        >
+          Upload
+        </vs-button>
       </div>
-
-      <div class="center content-inputs">
-        <vs-input label-placeholder="Add Instructions" v-model="instructions" />
-      </div>
-
-      <div class="center content-inputs">
-        <vs-input label-placeholder="Add Additional Tags" v-model="tags" />
-      </div>
-    </div>
-
-    <div class="upload">
-      <vs-button
-        color="#1F1F1F"
-        size="large"
-        class="flex-items"
-        type="submit"
-      >
-        Preview
-      </vs-button>
-      <vs-button
-        color="#1F1F1F"
-        size="large"
-        class="flex-items"
-        type="submit"
-      >
-        Upload
-      </vs-button>
-    </div>
     </form>
   </div>
 </template>
@@ -51,8 +51,8 @@
 export default {
   name: 'Create',
   middleware: 'authCheck',
-  data(){
-    return{
+  data() {
+    return {
       name: undefined,
       ingredients: undefined,
       instructions: undefined,
@@ -60,13 +60,17 @@ export default {
     }
   },
   methods: {
-    createRecipe () {
+    createRecipe() {
       this.$fire.firestore.collection('recipes').add({
         name: this.name,
         ingredients: this.ingredients,
         instructions: this.instructions,
         tags: this.tags
-      }).then(console.log("uploaded")).catch(err => console.log(err))
+      }).then(() => {
+          alert('New recipe created!')
+          this.$router.push('/')
+        }
+      ).catch(err => console.log(err))
     }
   }
 }
@@ -93,8 +97,8 @@ h1 {
   height: 40vh;
 }
 
-.upload{
-  display:flex;
+.upload {
+  display: flex;
   flex-direction: row;
   transform: scale(1.25);
 }

@@ -35,7 +35,10 @@ export default ({ app, store }, inject) => {
       console.error(e)
     }
 
-    if (pushStore) store.commit('user/setUserData', user)
-    return user
+    const userData = user.data()
+
+    if (pushStore) store.commit('user/setUserData', userData)
+    return userData
   })
+
 }

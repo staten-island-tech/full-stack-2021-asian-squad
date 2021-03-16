@@ -1,6 +1,12 @@
 <template>
-  <div class="container">
-    <h1 v-if="loginStatus">Signed In as {{ userUID }}</h1>
+  <div class='container'>
+    <div v-if='userData'>
+      <h1>Signed In as User: {{ userData.uname }}</h1>
+      <vs-button color='#1F1F1F' @click='getData()'>Get recipes (Work-in-progress)</vs-button>
+      <ul>
+        <li v-for='recipe in recipes' :key='recipe.ingredients'>{{ recipe }}</li>
+      </ul>
+    </div>
     <h1 v-else>Not Signed In</h1>
   </div>
 </template>
@@ -8,13 +14,30 @@
 <script>
 export default {
   computed: {
-    loginStatus() {
-      return this.$store.state.user.loggedIn
-    },
-    userUID() {
-      return this.$store.state.user.authData.uid
-    },
+    userData() {
+      return this.$store.state.user.userData
+    }
   },
+  data() {
+    return {
+      recipes: []
+    }
+  },
+  methods: {
+    getData: async function() {
+      const ref = this.$fire.firestore.collection('recipes')
+      let querySnapshot
+      try {
+        querySnapshot = await ref.get()
+        this.recipes = []
+        querySnapshot.forEach((doc) => {
+          this.recipes.push(doc.data())
+        })
+      } catch (e) {
+        alert(e)
+      }
+    }
+  }
 }
 </script>
 
@@ -22,8 +45,8 @@ export default {
 .container {
   position: relative;
   margin: 0 auto;
-  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
