@@ -1,44 +1,52 @@
 <template>
-  <div class='format'>
+  <div class="format">
     <h1>Create New Recipe</h1>
-    <vs-button circle icon floating
-               color='#1F1F1F'>
-      <i class='bx bx-plus'></i>
+    <vs-button circle icon floating color="#1F1F1F" @click="pickFile">
+      <i class="bx bx-plus"></i>
     </vs-button>
-
-    <form @submit.prevent='createRecipe'>
-      <div class='inputs'>
-        <div class='center content-inputs'>
-          <vs-input label-placeholder='Recipe Name' v-model='name' />
+    <input
+      type="file"
+      style="display: none"
+      ref="fileInput"
+      accept="image/*"
+      @change="onFilePicked"
+    />
+    <form @submit.prevent="createRecipe">
+      <div class="inputs">
+        <div class="center content-inputs">
+          <vs-input label-placeholder="Recipe Name" v-model="name" />
         </div>
 
-        <div class='center content-inputs'>
-          <vs-input label-placeholder='Add Ingredients' v-model='ingredients' />
+        <div class="center content-inputs">
+          <vs-input label-placeholder="Add Ingredients" v-model="ingredients" />
         </div>
 
-        <div class='center content-inputs'>
-          <vs-input label-placeholder='Add Instructions' v-model='instructions' />
+        <div class="center content-inputs">
+          <vs-input
+            label-placeholder="Add Instructions"
+            v-model="instructions"
+          />
         </div>
 
-        <div class='center content-inputs'>
-          <vs-input label-placeholder='Add Additional Tags' v-model='tags' />
+        <div class="center content-inputs">
+          <vs-input label-placeholder="Add Additional Tags" v-model="tags" />
         </div>
       </div>
 
-      <div class='upload'>
+      <div class="upload">
         <vs-button
-          color='#1F1F1F'
-          size='large'
-          class='flex-items'
-          type='submit'
+          color="#1F1F1F"
+          size="large"
+          class="flex-items"
+          type="submit"
         >
           Preview
         </vs-button>
         <vs-button
-          color='#1F1F1F'
-          size='large'
-          class='flex-items'
-          type='submit'
+          color="#1F1F1F"
+          size="large"
+          class="flex-items"
+          type="submit"
         >
           Upload
         </vs-button>
@@ -56,27 +64,69 @@ export default {
       name: undefined,
       ingredients: undefined,
       instructions: undefined,
-      tags: undefined
+      tags: undefined,
+      image: null,
     }
   },
   methods: {
     createRecipe() {
-      this.$fire.firestore.collection('recipes').add({
-        name: this.name,
-        ingredients: this.ingredients,
-        instructions: this.instructions,
-        tags: this.tags
-      }).then(() => {
+      this.$fire.firestore
+        .collection('recipes')
+        .add({
+          name: this.name,
+          ingredients: this.ingredients,
+          instructions: this.instructions,
+          tags: this.tags,
+        })
+        .then((data) => {
           alert('New recipe created!')
           this.$router.push('/')
+        })
+        .catch((err) => console.log(err))
+    },
+    pickFile() {
+      this.$refs.fileInput.click()
+    },
+    onFilePicked(e) {
+      const file = e.target.files
+      const filename = file[0].name
+      console.log(filename)
+
+      const uploadTask = this.$fire.storage.ref('images/' + filename).put(file)
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          /* var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + progress + '% done')
+          switch (snapshot.state) {
+            case this.$fire.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused')
+              break
+            case this.$fire.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running')
+              break
+          } */
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            this.image = downloadURL;
+            console.log('File available at', downloadURL)
+          })
         }
-      ).catch(err => console.log(err))
-    }
-  }
+      )
+    },
+  },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .format {
   display: flex;
   flex-direction: column;
