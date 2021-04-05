@@ -88,11 +88,15 @@ export default {
       this.$refs.fileInput.click()
     },
     onFilePicked(e) {
-      const file = e.target.files
-      const filename = file[0].name
-      console.log(filename)
+      const file = e.target.files[0]
+      const filename = file.name
+      // console.log(file)
 
-      const uploadTask = this.$fire.storage.ref('images/' + filename).put(file)
+      const metadata = {
+        contentType: 'image/jpeg',
+      }
+
+      const uploadTask = this.$fire.storage.ref('images/' + filename).put(file, metadata)
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -116,7 +120,7 @@ export default {
           // Handle successful uploads on complete
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.image = downloadURL;
+            this.image = downloadURL
             console.log('File available at', downloadURL)
           })
         }
