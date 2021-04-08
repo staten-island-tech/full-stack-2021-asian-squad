@@ -1,8 +1,8 @@
 <template>
   <div class="format">
     <h1>Create New Recipe</h1>
-    <vs-button circle icon floating color="#1F1F1F" @click="pickFile">
-      <i class="bx bx-plus"></i>
+    <vs-button icon floating color="#1F1F1F" @click="pickFile">
+      <i class="bx bx-plus"></i> &nbsp; Add File
     </vs-button>
     <input
       type="file"
@@ -96,7 +96,9 @@ export default {
         contentType: 'image/jpeg',
       }
 
-      const uploadTask = this.$fire.storage.ref('images/' + filename).put(file, metadata)
+      const uploadTask = this.$fire.storage
+        .ref('images/' + filename)
+        .put(file, metadata)
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -126,6 +128,7 @@ export default {
         }
       )
     },
+    getImageFromStorage() {},
   },
 }
 </script>
@@ -149,6 +152,7 @@ h1 {
   align-items: center;
   justify-content: space-around;
   height: 40vh;
+  transform: scale(1);
 }
 
 .upload {
