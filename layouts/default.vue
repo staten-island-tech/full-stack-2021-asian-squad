@@ -45,7 +45,7 @@ html {
 }
 
 .bg {
-  position: absolute;
+  position: fixed;
   z-index: -1;
   background-size: cover;
   background-color: #f5a6a6;

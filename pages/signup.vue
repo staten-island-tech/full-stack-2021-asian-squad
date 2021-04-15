@@ -97,7 +97,7 @@ export default {
         .catch((error) => {
           this.$vs.notification({
             color: 'success',
-            title: 'SignUp Error.',
+            title: 'SignUp Error',
             text: error
           })
         })

@@ -1,13 +1,16 @@
 <template>
   <div class='format'>
     <h1>Create New Recipe</h1>
-    <vs-button size='large' icon floating color='#1F1F1F' @click='pickFile'>
-      <i class='bx bx-plus'></i> &nbsp; Add File
-    </vs-button>
+    <img id='recipeImage' src='#' alt='Select recipe image'>
     <!--input for file-->
+    <div class='buttons'>
+      <vs-button size='large' icon floating color='#1F1F1F' @click='pickFile'>
+        <i class='bx bx-plus'></i> &nbsp; Add/Change Image
+      </vs-button>
+    </div>
     <input
       type='file'
-      style='display: none'
+      class='file-input'
       ref='fileInput'
       accept='image/*'
       @change='onFilePicked'
@@ -31,13 +34,15 @@
         </div>
       </div>
     </form>
-    <vs-button
-      color='#1F1F1F'
-      size='large'
-      type='submit'
-    >
-      Upload
-    </vs-button>
+    <div class='buttons'>
+      <vs-button
+        color='#1F1F1F'
+        size='large'
+        type='submit'
+      >
+        Upload
+      </vs-button>
+    </div>
   </div>
 </template>
 
@@ -51,7 +56,7 @@ export default {
       ingredients: undefined,
       instructions: undefined,
       tags: undefined,
-      image: null
+      image: undefined
     }
   },
   methods: {
@@ -64,58 +69,58 @@ export default {
           instructions: this.instructions,
           tags: this.tags
         })
-        .then((data) => {
+        .then(() => {
           alert('New recipe created!')
           this.$router.push('/')
         })
-        .catch((err) => console.log(err))
+        .catch((error) =>
+          this.$vs.notification({
+            color: 'danger',
+            title: 'Upload Failure',
+            text: error
+          }))
     },
     pickFile() {
       this.$refs.fileInput.click()
     },
     onFilePicked(e) {
+      const recipeImage = document.getElementById('recipeImage')
       const file = e.target.files[0]
-      const filename = file.name
-      // console.log(file)
+      this.image = file
 
-      const metadata = {
-        contentType: 'image/jpeg'
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        recipeImage.src = e.target.result
       }
+      reader.readAsDataURL(file)
 
-      const uploadTask = this.$fire.storage
-        .ref('images/' + filename)
-        .put(file, metadata)
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-        },
-        (error) => {
-        },
-        () => {
-          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-            this.image = downloadURL
-            console.log('File available at', downloadURL)
-          })
-        }
-      )
-    },
-    getImageFromStorage() {
+      this.$addImage(this.image)
+        .then(url => console.log(url))
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
+#recipeImage {
+  max-height: 30vh;
+}
+
 .format {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  height: 100vh;
+  text-align: center;
+}
+
+button {
+  margin: 1rem auto;
+}
+
+.buttons {
+  width: 100%;
 }
 
 h1 {
   font-size: 2rem;
+  margin: 2rem;
 }
 
 .inputs {
@@ -124,6 +129,13 @@ h1 {
   align-items: center;
   justify-content: space-around;
   height: 40vh;
-  transform: scale(1);
+}
+
+.content-inputs {
+  transform: scale(1.25);
+}
+
+.file-input {
+  display: none;
 }
 </style>
