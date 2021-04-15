@@ -88,9 +88,18 @@ export default {
           this.$addUser(result.user.uid, this.dsname, this.email)
           // bump user to home
           this.$router.push('/')
+          this.$vs.notification({
+            color: 'success',
+            title: 'SignUp Success!',
+            text: 'Welcome to BAT!'
+          })
         })
         .catch((error) => {
-          alert(error.message)
+          this.$vs.notification({
+            color: 'success',
+            title: 'SignUp Error.',
+            text: error
+          })
         })
     },
   },
@@ -100,11 +109,11 @@ export default {
 <style lang='scss' scoped>
 .login-content {
   position: relative;
-  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 2;
+  height: 100vh;
 }
 
 h1 {

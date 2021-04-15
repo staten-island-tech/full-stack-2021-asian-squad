@@ -53,4 +53,8 @@ html {
   height: 100vh;
   width: 100vw;
 }
+
+.nuxt-container > * {
+  padding: 5vh 5vw;
+}
 </style>

@@ -88,9 +88,18 @@ export default {
           // push user info into vuex and bump to homepage w/ helper
           this.$getUser(result.user.uid)
           this.$router.push('/')
+          this.$vs.notification({
+            color: 'success',
+            title: 'Login Success!',
+            text: 'Welcome to BAT!'
+          })
         })
         .catch((error) => {
-          alert(error.message)
+          this.$vs.notification({
+            color: 'danger',
+            title: 'Login Error',
+            text: error
+          })
         })
     },
     googleLogin: function() {
@@ -108,9 +117,18 @@ export default {
             this.$getUser(uid)
           }
           this.$router.push('/')
+          this.$vs.notification({
+            color: 'success',
+            title: 'Login Success!',
+            text: 'Welcome to BAT!'
+          })
         })
         .catch((error) => {
-          alert(error.message)
+          this.$vs.notification({
+            color: 'danger',
+            title: 'Login Error',
+            text: error
+          })
         })
     }
   },
@@ -129,11 +147,11 @@ export default {
 <style lang='scss' scoped>
 .login-content {
   position: relative;
-  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 2;
+  height: 100vh;
 }
 
 h1 {

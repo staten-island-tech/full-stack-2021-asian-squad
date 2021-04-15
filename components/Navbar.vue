@@ -1,5 +1,5 @@
 <template>
-  <vs-navbar shadow square>
+  <vs-navbar shadow square fixed>
     <template #left>
       <vs-button dark to='/'>Home</vs-button>
     </template>
