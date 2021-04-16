@@ -33,16 +33,10 @@
           <vs-input label-placeholder='Add Additional Tags' v-model='tags' />
         </div>
       </div>
-    </form>
-    <div class='buttons'>
-      <vs-button
-        color='#1F1F1F'
-        size='large'
-        type='submit'
-      >
+      <vs-button color='#1F1F1F' size='large' type='submit'>
         Upload
       </vs-button>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -61,29 +55,33 @@ export default {
   },
   methods: {
     createRecipe() {
-      this.$fire.firestore
-        .collection('recipes')
-        .add({
-          name: this.name,
-          ingredients: this.ingredients,
-          instructions: this.instructions,
-          tags: this.tags
-        })
+      const loading = this.$vs.loading({
+        text: 'Uploading Recipe...',
+        color: 'dark'
+      })
+      this.$addRecipe(this.$data)
         .then(() => {
-          alert('New recipe created!')
+          loading.close()
           this.$router.push('/')
+          this.$vs.notification({
+            color: 'success',
+            title: 'Recipe Created!',
+            text: 'Your recipe has been created!'
+          })
         })
-        .catch((error) =>
+        .catch((error) => {
           this.$vs.notification({
             color: 'danger',
-            title: 'Upload Failure',
+            title: 'Recipe Error',
             text: error
-          }))
+          })
+        })
     },
     pickFile() {
       this.$refs.fileInput.click()
     },
     onFilePicked(e) {
+      // allow for live image previewing on UI
       const recipeImage = document.getElementById('recipeImage')
       const file = e.target.files[0]
       this.image = file
@@ -93,9 +91,6 @@ export default {
         recipeImage.src = e.target.result
       }
       reader.readAsDataURL(file)
-
-      this.$addImage(this.image)
-        .then(url => console.log(url))
     }
   }
 }

@@ -1,9 +1,10 @@
 export default ({ app, store }, inject) => {
-  inject('addUser', async (id, dsname, email) => {
+  inject('addUser', async (uid, dsname, email) => {
     // adds new user onto firestore
     const user = {
+      uid,
       uname: dsname,
-      uimg: 'placeholder',
+      uimg: undefined,
       uemail: email,
       udisc: '',
       preferences: {
@@ -12,7 +13,7 @@ export default ({ app, store }, inject) => {
       shopping_list: []
     }
 
-    const ref = app.$fire.firestore.collection('users').doc(id)
+    const ref = app.$fire.firestore.collection('users').doc(uid)
 
     try {
       await ref.set(user)
@@ -24,9 +25,9 @@ export default ({ app, store }, inject) => {
     store.commit('user/setUserData', user)
   })
 
-  inject('getUser', async (id, pushStore = true) => {
+  inject('getUser', async (uid, pushStore = true) => {
     // returns user information stored from firestore, and puts it on vuex by default
-    const ref = app.$fire.firestore.collection('users').doc(id)
+    const ref = app.$fire.firestore.collection('users').doc(uid)
 
     let user
     try {
@@ -39,39 +40,39 @@ export default ({ app, store }, inject) => {
     return userData
   })
 
-  inject('addImage', async (imageData) => {
+  inject('addRecipe', async (recipeData) => {
+    const recipeImage = recipeData.image
+    delete recipeData.image
     const metadata = {
       contentType: 'image/jpeg'
     }
-    const uname = store.state.user.userData.uname
-    const ref = app.$fire.storage
-      .ref(`${uname}/${imageData.name}`)
-    let downloadURL
+    // current user data
+    const { uid, userData } = store.state.user
+    // references to storage points
+    const imgRef = app.$fire.storage
+      .ref(`recipeImages/${userData.uname}/${recipeImage.name}`)
+    const recipeRef = app.$fire.firestore
+      .collection('recipes').doc()
+    const userRef = app.$fire.firestore
+      .collection(`users/${uid}/created-recipes`)
+
     try {
-      const snapshot = await ref.put(imageData, metadata)
-      downloadURL = await snapshot.ref.getDownloadURL()
+      // store image on firebase storage
+      const snapshot = await imgRef.put(recipeImage, metadata)
+
+      // store remaining data and reference on firestore
+      recipeData.imgUrl = await snapshot.ref.getDownloadURL()
+      await recipeRef.set(recipeData)
+
+      // create reference to user document
+      await userRef.add({
+        ref: recipeRef,
+        name: recipeData.name,
+        imgUrl: recipeData.imgUrl,
+        author: userData.uname,
+      })
     } catch (error) {
       console.error(error)
     }
-    return downloadURL
-    // const uploadTask = this.$fire.storage
-    //   .ref(`${this.$store.state.user.userData.uname}/${this.image.name}`)
-    //   .put(this.image, metadata)
-    // uploadTask.on(
-    //   'state_changed',
-    //   () => {},
-    //   (error) => {
-    //     this.$vs.notification({
-    //       color: 'danger',
-    //       title: 'Upload Failure',
-    //       text: error
-    //     })
-    //   },
-    //   () => {
-    //     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-    //       this.image = downloadURL
-    //     })
-    //   }
-    // )
   })
 }
