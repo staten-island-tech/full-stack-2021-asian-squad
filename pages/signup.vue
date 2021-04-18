@@ -91,14 +91,14 @@ export default {
           this.$vs.notification({
             color: 'success',
             title: 'SignUp Success!',
-            text: 'Welcome to BAT!'
+            text: 'Welcome to BAT!',
           })
         })
         .catch((error) => {
           this.$vs.notification({
             color: 'success',
             title: 'SignUp Error',
-            text: error
+            text: error,
           })
         })
     },

@@ -8,9 +8,9 @@ export default ({ app, store }, inject) => {
       uemail: email,
       udisc: '',
       preferences: {
-        dark_mode: false
+        dark_mode: false,
       },
-      shopping_list: []
+      shopping_list: [],
     }
 
     const ref = app.$fire.firestore.collection('users').doc(uid)
@@ -44,17 +44,18 @@ export default ({ app, store }, inject) => {
     const recipeImage = recipeData.image
     delete recipeData.image
     const metadata = {
-      contentType: 'image/jpeg'
+      contentType: 'image/jpeg',
     }
     // current user data
     const { uid, userData } = store.state.user
     // references to storage points
-    const imgRef = app.$fire.storage
-      .ref(`recipeImages/${userData.uname}/${recipeImage.name}`)
-    const recipeRef = app.$fire.firestore
-      .collection('recipes').doc()
-    const userRef = app.$fire.firestore
-      .collection(`users/${uid}/created-recipes`)
+    const imgRef = app.$fire.storage.ref(
+      `recipeImages/${userData.uname}/${recipeImage.name}`
+    )
+    const recipeRef = app.$fire.firestore.collection('recipes').doc()
+    const userRef = app.$fire.firestore.collection(
+      `users/${uid}/created-recipes`
+    )
 
     try {
       // store image on firebase storage

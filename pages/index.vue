@@ -2,21 +2,24 @@
   <div class="container">
     <div v-if="userData">
       <h1>Signed In as User: {{ userData.uname }}</h1>
-      <vs-button color="#1F1F1F" @click="getData()"
+      <!-- <vs-button color="#1F1F1F" @click="getData()"
         >Get recipes (Work-in-progress)</vs-button
       >
       <ul>
         <li v-for="recipe in recipes" :key="recipe.ingredients">
           {{ recipe }}
         </li>
-      </ul>
+      </ul> -->
+      <RecipeCard />
     </div>
     <h1 v-else>Not Signed In</h1>
   </div>
 </template>
 
 <script>
+import RecipeCard from '~/components/RecipeCard.vue'
 export default {
+  components: { RecipeCard },
   computed: {
     userData() {
       return this.$store.state.user.userData
@@ -46,13 +49,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  position: relative;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+// .container {
+  // position: relative;
+  // margin: 0 auto;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  // text-align: center;
+  // TODO
+// }
 </style>
