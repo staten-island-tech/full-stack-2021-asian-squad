@@ -1,7 +1,12 @@
 <template>
   <vs-navbar shadow fixed>
     <template #left>
-      <vs-button dark to='/'>Home</vs-button>
+      <vs-button transparent dark to='/'>
+        <strong>BAT</strong>
+        <template #animate>
+          <i class="bx bx-home"></i>
+        </template>
+      </vs-button>
     </template>
     <template #right>
       <vs-button dark :disabled='!loggedIn' to='/create'>

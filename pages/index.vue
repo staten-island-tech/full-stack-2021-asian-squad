@@ -12,7 +12,10 @@
       </ul> -->
       <RecipeCard />
     </div>
-    <h1 v-else>Not Signed In</h1>
+    <div v-else>
+      <h1>Bone Apple Teeth</h1>
+      <p>Welcome! Please log in or sign up!</p>
+    </div>
   </div>
 </template>
 
@@ -50,13 +53,13 @@ export default {
 
 <style lang="scss" scoped>
 // .container {
-  // position: relative;
-  // margin: 0 auto;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
-  // text-align: center;
-  // TODO
+// position: relative;
+// margin: 0 auto;
+// display: flex;
+// flex-direction: column;
+// justify-content: center;
+// align-items: center;
+// text-align: center;
+// TODO
 // }
 </style>

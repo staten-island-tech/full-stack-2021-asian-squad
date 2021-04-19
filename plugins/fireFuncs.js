@@ -41,11 +41,22 @@ export default ({ app, store }, inject) => {
   })
 
   inject('addRecipe', async (recipeData) => {
+    // check for all properties of passed object
+    if (
+      !recipeData.name ||
+      !recipeData.desc ||
+      !recipeData.image ||
+      recipeData.ingredients.length < 1 ||
+      recipeData.instructions.length < 1
+    ) {
+      throw 'Recipe is incomplete!'
+    }
+
     const recipeImage = recipeData.image
     delete recipeData.image
-    const metadata = {
-      contentType: 'image/jpeg',
-    }
+      const metadata = {
+        contentType: 'image/jpeg',
+      }
     // current user data
     const { uid, userData } = store.state.user
     // references to storage points
@@ -69,6 +80,7 @@ export default ({ app, store }, inject) => {
       await userRef.add({
         ref: recipeRef,
         name: recipeData.name,
+        desc: recipeData.desc,
         imgUrl: recipeData.imgUrl,
         author: userData.uname,
       })

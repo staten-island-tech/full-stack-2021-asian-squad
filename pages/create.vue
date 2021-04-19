@@ -1,19 +1,16 @@
 <template>
   <div class="create-content">
     <h1>Create New Recipe</h1>
-    <img id="recipeImage" src="#" alt="(Select recipe image)" />
     <!--input for file-->
-    <div class="buttons">
-      <vs-button
-        class="main-buttons"
-        floating
-        size="large"
-        color="#1F1F1F"
-        @click="pickFile"
-      >
-        <i class="bx bx-plus"></i> &nbsp; Add/Change Image
-      </vs-button>
-    </div>
+    <vs-button
+      class="main-buttons"
+      floating
+      size="large"
+      dark
+      @click="pickFile"
+    >
+      <i class="bx bx-plus"></i> &nbsp; Add/Change Image
+    </vs-button>
     <input
       type="file"
       class="file-input"
@@ -21,59 +18,19 @@
       accept="image/*"
       @change="onFilePicked"
     />
-    <div class="tables">
-      <vs-table v-if="ingredientsArr.length > 0" id="ingredients-list">
-        <template #thead>
-          <vs-tr>
-            <vs-th>Ingredients List</vs-th>
-            <vs-th>Edit</vs-th>
-          </vs-tr>
-        </template>
-        <template #tbody>
-          <vs-tr v-for="(ingredient, i) in ingredientsArr" :key="i">
-            <vs-td>{{ ingredient }}</vs-td>
-            <vs-td>
-              <vs-button icon transparent class="list-buttons" color="#1F1F1F">
-                <i class="bx bx-pencil"></i>
-              </vs-button>
-              <vs-button icon transparent class="list-buttons" color="#1F1F1F">
-                <i class="bx bx-x"></i>
-              </vs-button>
-            </vs-td>
-          </vs-tr>
-        </template>
-      </vs-table>
-      <vs-table v-if="instructionsArr.length > 0" id="instructions-list">
-        <template #thead>
-          <vs-th>#</vs-th>
-          <vs-th>Instructions</vs-th>
-          <vs-th>Edit</vs-th>
-        </template>
-        <template #tbody>
-          <vs-tr v-for="(instruction, i) in instructionsArr" :key="i">
-            <vs-td>{{ i + 1 }}</vs-td>
-            <vs-td>{{ instruction }}</vs-td>
-            <vs-td>
-              <vs-button icon transparent class="list-buttons" color="#1F1F1F">
-                <i class="bx bx-pencil"></i>
-              </vs-button>
-              <vs-button icon transparent class="list-buttons" color="#1F1F1F">
-                <i class="bx bx-x"></i>
-              </vs-button>
-            </vs-td>
-          </vs-tr>
-        </template>
-      </vs-table>
-    </div>
     <!-- form for input -->
     <form @submit.prevent>
       <div class="inputs">
         <vs-input label-placeholder="Recipe Name" v-model="name" />
       </div>
       <div class="inputs">
+        <vs-input label-placeholder="Description" v-model="description" />
+      </div>
+      <div class="inputs">
         <vs-input
           icon-after
           @click-icon="addIngredient"
+          @keypress.enter="addIngredient"
           label-placeholder="Add Ingredients"
           v-model="ingredient"
         >
@@ -89,6 +46,7 @@
         <vs-input
           icon-after
           @click-icon="addInstruction"
+          @keypress.enter="addInstruction"
           label-placeholder="Add Instructions"
           v-model="instruction"
         >
@@ -101,18 +59,89 @@
         </vs-input>
       </div>
       <div class="inputs">
-        <vs-input label-placeholder="Add Tag"> </vs-input>
+        <vs-input label-placeholder="Add Tag" v-model="tags"/>
       </div>
-      <vs-button
-        color="#1F1F1F"
-        class="main-buttons"
-        floating
-        size="large"
-        type="submit"
-        @click="createRecipe"
-        >Upload
-      </vs-button>
     </form>
+    <!-- preview pane shows when data exists -->
+    <div
+      v-if="
+        ingredientsArr.length > 0 ||
+        instructionsArr.length > 0 ||
+        image != undefined
+      "
+      class="preview"
+    >
+      <h2>Preview</h2>
+      <!-- image preview -->
+      <img id="recipeImage" v-if="image" :src="imageURL" alt="Recipe Image" />
+      <!-- ingredient/instruction preview -->
+      <div class="preview-lists">
+        <div v-if="ingredientsArr.length > 0" id="ingredients-list">
+          <h3>Ingredients</h3>
+          <ul>
+            <li
+              v-for="(ingredient, i) in ingredientsArr"
+              :key="i"
+              @click="
+                ;(editActive = true), (selArr = ingredientsArr), (selIndex = i)
+              "
+            >
+              {{ ingredient }}
+            </li>
+          </ul>
+        </div>
+        <div v-if="instructionsArr.length > 0" id="instructions-list">
+          <h3>Instructions</h3>
+          <ol>
+            <li
+              v-for="(instruction, i) in instructionsArr"
+              :key="i"
+              @click="
+                ;(editActive = true), (selArr = instructionsArr), (selIndex = i)
+              "
+            >
+              {{ instruction }}
+            </li>
+          </ol>
+        </div>
+      </div>
+      <!-- editing dialog -->
+      <vs-dialog
+        class="dialogs"
+        v-model="editActive"
+        @close="dialogCloseCheck(selArr, selIndex)"
+      >
+        <template #header> Edit Item </template>
+        <vs-input
+          v-model="selArr[selIndex]"
+          class="dialog-input"
+          @keypress.enter="dialogCloseCheck(selArr, selIndex)"
+        />
+        <template #footer class="dialog-buttons">
+          <div class="dialog-buttons">
+            <vs-button
+              @click="dialogCloseCheck(selArr, selIndex)"
+              >Save</vs-button
+            >
+            <vs-button
+              danger
+              @click="selArr.splice(selIndex, 1), (editActive = false)"
+              >Delete</vs-button
+            >
+          </div>
+        </template>
+      </vs-dialog>
+    </div>
+    <!-- upload/submit button -->
+    <vs-button
+      dark
+      class="main-buttons"
+      floating
+      size="large"
+      type="submit"
+      @click="createRecipe"
+      >Upload
+    </vs-button>
   </div>
 </template>
 
@@ -122,16 +151,25 @@ export default {
   middleware: 'authCheck',
   data() {
     return {
-      name: undefined,
+      name: '',
+      description: '',
       ingredient: '',
       ingredientsArr: [],
       instruction: '',
       instructionsArr: [],
       tags: [],
       image: undefined,
+      imageURL: undefined,
+      editActive: false,
+      selArr: '',
+      selIndex: undefined,
     }
   },
   methods: {
+    dialogCloseCheck(selArr, selIndex) {
+      if (selArr[selIndex] === '') selArr.splice(selIndex, 1)
+      this.editActive = false
+    },
     addIngredient() {
       // do nothing if empty
       if (!this.ingredient) return
@@ -156,6 +194,7 @@ export default {
       })
       const recipeData = {
         name: this.name,
+        desc: this.description,
         ingredients: this.ingredientsArr,
         instructions: this.instructionsArr,
         tags: this.tags,
@@ -186,13 +225,8 @@ export default {
     },
     onFilePicked(e) {
       // allow for live image previewing on UI
-      const recipeImage = document.getElementById('recipeImage')
       const file = e.target.files[0]
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        recipeImage.src = e.target.result
-      }
-      reader.readAsDataURL(file)
+      this.imageURL = URL.createObjectURL(file)
       // update vue data object
       this.image = file
     },
@@ -218,18 +252,8 @@ h1 {
   margin: 1rem auto;
 }
 
-.tables {
-  margin: 0 auto;
-  width: 65%;
-}
-
-.list-buttons {
-  margin: 0;
-  display: inline-block;
-}
-
-td {
-  padding: 0;
+.file-input {
+  display: none;
 }
 
 form {
@@ -243,7 +267,34 @@ form {
   }
 }
 
-.file-input {
-  display: none;
+.preview-lists {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h3 {
+    margin: 1rem 0 0 0;
+    text-align: center;
+  }
+  li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  li:hover {
+    text-decoration: underline;
+  }
+  * {
+    text-align: left;
+    vertical-align: middle;
+  }
+}
+
+.dialog-input {
+  position: absolute;
+}
+
+.dialog-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 </style>
