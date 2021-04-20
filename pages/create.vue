@@ -20,47 +20,43 @@
     />
     <!-- form for input -->
     <form @submit.prevent>
-      <div class="inputs">
-        <vs-input label-placeholder="Recipe Name" v-model="name" />
-      </div>
-      <div class="inputs">
-        <vs-input label-placeholder="Description" v-model="description" />
-      </div>
-      <div class="inputs">
-        <vs-input
-          icon-after
-          @click-icon="addIngredient"
-          @keypress.enter="addIngredient"
-          label-placeholder="Add Ingredients"
-          v-model="ingredient"
-        >
-          <template #icon>
-            <i class="bx bx-plus"></i>
-          </template>
-          <template v-if="ingredient !== ''" #message-primary>
-            Click on <i class="bx bx-plus"></i> to add ingredient
-          </template>
-        </vs-input>
-      </div>
-      <div class="inputs">
-        <vs-input
-          icon-after
-          @click-icon="addInstruction"
-          @keypress.enter="addInstruction"
-          label-placeholder="Add Instructions"
-          v-model="instruction"
-        >
-          <template #icon>
-            <i class="bx bx-plus"></i>
-          </template>
-          <template v-if="instruction !== ''" #message-primary>
-            Click on <i class="bx bx-plus"></i> to add instruction
-          </template>
-        </vs-input>
-      </div>
-      <div class="inputs">
-        <vs-input label-placeholder="Add Tag" v-model="tags"/>
-      </div>
+      <vs-input class="inputs" label-placeholder="Recipe Name" v-model="name" />
+      <vs-input
+        class="inputs"
+        label-placeholder="Description"
+        v-model="description"
+      />
+      <vs-input
+        class="inputs"
+        icon-after
+        @click-icon="addIngredient"
+        @keypress.enter="addIngredient"
+        label-placeholder="Add Ingredients"
+        v-model="ingredient"
+      >
+        <template #icon>
+          <i class="bx bx-plus"></i>
+        </template>
+        <template v-if="ingredient !== ''" #message-primary>
+          Click on <i class="bx bx-plus"></i> to add ingredient
+        </template>
+      </vs-input>
+      <vs-input
+        class="inputs"
+        icon-after
+        @click-icon="addInstruction"
+        @keypress.enter="addInstruction"
+        label-placeholder="Add Instructions"
+        v-model="instruction"
+      >
+        <template #icon>
+          <i class="bx bx-plus"></i>
+        </template>
+        <template v-if="instruction !== ''" #message-primary>
+          Click on <i class="bx bx-plus"></i> to add instruction
+        </template>
+      </vs-input>
+      <vs-input class="inputs" label-placeholder="Add Tag" v-model="tags" />
     </form>
     <!-- preview pane shows when data exists -->
     <div
@@ -119,8 +115,7 @@
         />
         <template #footer class="dialog-buttons">
           <div class="dialog-buttons">
-            <vs-button
-              @click="dialogCloseCheck(selArr, selIndex)"
+            <vs-button @click="dialogCloseCheck(selArr, selIndex)"
               >Save</vs-button
             >
             <vs-button
@@ -151,13 +146,14 @@ export default {
   middleware: 'authCheck',
   data() {
     return {
-      name: '',
-      description: '',
+      name: undefined,
+      description: undefined,
       ingredient: '',
       ingredientsArr: [],
       instruction: '',
       instructionsArr: [],
-      tags: [],
+      prepTime: undefined,
+      difficulty: undefined,
       image: undefined,
       imageURL: undefined,
       editActive: false,
@@ -197,7 +193,8 @@ export default {
         desc: this.description,
         ingredients: this.ingredientsArr,
         instructions: this.instructionsArr,
-        tags: this.tags,
+        prepTime: this.prepTime,
+        difficulty: this.difficulty,
         image: this.image,
       }
       // use helper function
@@ -208,6 +205,7 @@ export default {
             color: 'success',
             title: 'Recipe Created!',
             text: 'Your recipe has been created!',
+            position: 'top-center',
           })
         })
         .catch((error) => {
@@ -215,6 +213,7 @@ export default {
             color: 'danger',
             title: 'Recipe Error',
             text: error,
+            position: 'top-center',
           })
         })
       loading.close()
@@ -263,7 +262,7 @@ form {
   height: auto;
   .inputs {
     transform: scale(1.25);
-    margin: 2rem;
+    margin: 1.5rem;
   }
 }
 

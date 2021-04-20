@@ -1,16 +1,10 @@
 <template>
-
-<div class="outline">
-
-  <div class="recipes4u">
-    RECIPES JUST FOR YOU:
+  <div class="outline">
+    <div class="recipes4u">RECIPES JUST FOR YOU:</div>
+    <img class="image" src="./temp/testImage.jpeg" alt="temporary" />
+    <h1>RECIPE NAME</h1>
+    <div class="tags">Yummy Delicious 10/10</div>
   </div>
-
-    <img class="image" src="temp media\1537973085542.jpeg" alt="temporary">
-
-      <h1> RECIPE NAME </h1>
-      <div class="tags"> Yummy Delicious 10/10 </div>
-</div>
 </template>
 
 <script>
@@ -44,8 +38,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.outline{
-  display:flex;
+.outline {
+  display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
@@ -55,20 +49,21 @@ export default {
   width: 250px;
   height: 500px;
 }
-.recipes4u{
+.recipes4u {
   font-weight: 400;
 }
 
-.image{
+.image {
+  object-fit: cover;
   border-radius: 25px;
   padding: 20px;
   width: 200px;
   height: 300px;
 }
 
-.tags{
+.tags {
   display: flex;
   flex-direction: row;
-  padding:5px;
+  padding: 5px;
 }
 </style>

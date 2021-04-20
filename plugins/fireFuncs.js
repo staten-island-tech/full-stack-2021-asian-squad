@@ -42,10 +42,13 @@ export default ({ app, store }, inject) => {
 
   inject('addRecipe', async (recipeData) => {
     // check for all properties of passed object
+    // ugly code but heyyy it works
     if (
       !recipeData.name ||
       !recipeData.desc ||
       !recipeData.image ||
+      !recipeData.prepTime ||
+      !recipeData.difficulty ||
       recipeData.ingredients.length < 1 ||
       recipeData.instructions.length < 1
     ) {
