@@ -1,33 +1,48 @@
 <template>
   <div class="create-content">
     <h1>Create New Recipe</h1>
-    <!--input for file-->
-    <vs-button
-      class="main-buttons"
-      floating
-      size="large"
-      dark
-      @click="pickFile"
-    >
-      <i class="bx bx-plus"></i> &nbsp; Add/Change Image
-    </vs-button>
-    <input
-      type="file"
-      class="file-input"
-      ref="fileInput"
-      accept="image/*"
-      @change="onFilePicked"
-    />
     <!-- form for input -->
-    <form @submit.prevent>
-      <vs-input class="inputs" label-placeholder="Recipe Name" v-model="name" />
-      <vs-input
-        class="inputs"
-        label-placeholder="Description"
-        v-model="description"
+    <div class="input-container">
+      <!--input for file-->
+      <vs-button
+        class="main-buttons"
+        floating
+        size="large"
+        dark
+        @click="pickFile"
+      >
+        <i class="bx bx-plus"></i> &nbsp; Add/Change Image
+      </vs-button>
+      <input
+        type="file"
+        class="file-input"
+        ref="fileInput"
+        accept="image/*"
+        @change="onFilePicked"
       />
+      <!-- name -->
+      <vs-input label-placeholder="Recipe Name" v-model="name" />
+      <!-- description -->
+      <vs-input label-placeholder="Description" v-model="description" />
+      <!-- prep time -->
       <vs-input
-        class="inputs"
+        type="number"
+        label-placeholder="Prep Time (minutes)"
+        v-model="prepTime"
+      >
+        <template v-if="prepTime < 1" #message-primary>
+          Please input a positive number
+        </template>
+      </vs-input>
+      <!-- difficulty -->
+      <vs-select label-placeholder="Cooking Difficulty" v-model="difficulty">
+        <vs-option label="Easy" value="1"> Easy </vs-option>
+        <vs-option label="Intermediate" value="2"> Intermediate </vs-option>
+        <vs-option label="Hard" value="3"> Hard </vs-option>
+        <vs-option label="Gordon Ramsay" value="4"> Gordon Ramsay </vs-option>
+      </vs-select>
+      <!-- ingredient -->
+      <vs-input
         icon-after
         @click-icon="addIngredient"
         @keypress.enter="addIngredient"
@@ -41,8 +56,8 @@
           Click on <i class="bx bx-plus"></i> to add ingredient
         </template>
       </vs-input>
+      <!-- instruction -->
       <vs-input
-        class="inputs"
         icon-after
         @click-icon="addInstruction"
         @keypress.enter="addInstruction"
@@ -56,8 +71,7 @@
           Click on <i class="bx bx-plus"></i> to add instruction
         </template>
       </vs-input>
-      <vs-input class="inputs" label-placeholder="Add Tag" v-model="tags" />
-    </form>
+    </div>
     <!-- preview pane shows when data exists -->
     <div
       v-if="
@@ -146,14 +160,14 @@ export default {
   middleware: 'authCheck',
   data() {
     return {
-      name: undefined,
-      description: undefined,
+      name: '',
+      description: '',
       ingredient: '',
       ingredientsArr: [],
       instruction: '',
       instructionsArr: [],
       prepTime: undefined,
-      difficulty: undefined,
+      difficulty: '',
       image: undefined,
       imageURL: undefined,
       editActive: false,
@@ -163,7 +177,8 @@ export default {
   },
   methods: {
     dialogCloseCheck(selArr, selIndex) {
-      if (selArr[selIndex] === '') selArr.splice(selIndex, 1)
+      // delete if remaining selection is empty (not including whitespace)
+      if (selArr[selIndex].trim() === '') selArr.splice(selIndex, 1)
       this.editActive = false
     },
     addIngredient() {
@@ -193,8 +208,8 @@ export default {
         desc: this.description,
         ingredients: this.ingredientsArr,
         instructions: this.instructionsArr,
-        prepTime: this.prepTime,
-        difficulty: this.difficulty,
+        prepTime: parseInt(this.prepTime),
+        difficulty: parseInt(this.difficulty),
         image: this.image,
       }
       // use helper function
@@ -255,12 +270,12 @@ h1 {
   display: none;
 }
 
-form {
+.input-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: auto;
-  .inputs {
+  > div {
     transform: scale(1.25);
     margin: 1.5rem;
   }
