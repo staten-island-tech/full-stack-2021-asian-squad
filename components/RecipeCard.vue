@@ -2,7 +2,7 @@
   <div class="outline">
     <div class="recipes4u">RECIPES JUST FOR YOU:</div>
     <img class="image" src="./temp/testImage.jpeg" alt="temporary" />
-    <h1>RECIPE NAME</h1>
+    <h1>Test Name</h1>
     <div class="tags">Yummy Delicious 10/10</div>
   </div>
 </template>
@@ -47,18 +47,19 @@ export default {
   border: 2px solid #000000;
   padding: 15px;
   width: 250px;
-  height: 500px;
+  height: 450px;
 }
 .recipes4u {
+  font-size: 1.4vh;
   font-weight: 400;
 }
 
 .image {
   object-fit: cover;
   border-radius: 25px;
-  padding: 20px;
-  width: 200px;
-  height: 300px;
+  padding: 15px;
+  width: 250px;
+  height: 350px;
 }
 
 .tags {
