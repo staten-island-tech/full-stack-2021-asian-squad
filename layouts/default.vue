@@ -45,12 +45,16 @@ html {
 }
 
 .bg {
-  position: absolute;
+  position: fixed;
   z-index: -1;
   background-size: cover;
   background-color: #f5a6a6;
   clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0% 100%);
   height: 100vh;
   width: 100vw;
+}
+
+.nuxt-container > * {
+  padding: 5vh 5vw;
 }
 </style>

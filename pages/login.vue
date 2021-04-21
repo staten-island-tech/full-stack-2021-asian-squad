@@ -1,55 +1,47 @@
 <template>
-  <div class='login-content'>
+  <div class="login-content">
     <h1>Bone Apple Teeth</h1>
     <h2>Log In</h2>
     <form @submit.prevent>
       <vs-input
-        class='flex-items'
+        class="flex-items"
         icon-after
-        type='text'
-        label-placeholder='Email'
-        v-model='email'
+        type="text"
+        label-placeholder="Email"
+        v-model="email"
       >
         <template #icon>
-          <i class='bx bx-envelope'></i>
+          <i class="bx bx-envelope"></i>
         </template>
       </vs-input>
       <vs-input
-        class='flex-items'
+        class="flex-items"
         icon-after
-        type='password'
-        label-placeholder='Password'
-        v-model='pass'
-        @click-icon='passVisible = !passVisible'
-        :visible-password='passVisible'
+        type="password"
+        label-placeholder="Password"
+        v-model="pass"
+        @click-icon="passVisible = !passVisible"
+        :visible-password="passVisible"
       >
         <template #icon>
-          <i v-if='!passVisible' class='bx bx-lock'></i>
-          <i v-else class='bx bx-show'></i>
+          <i v-if="!passVisible" class="bx bx-lock"></i>
+          <i v-else class="bx bx-show"></i>
         </template>
       </vs-input>
-      <vs-checkbox dark v-model='rememberMe'>Remember Me</vs-checkbox>
-      <vs-button size='large' type='button' dark transparent to='/forgot'
-      >Forgot Password?
+      <vs-checkbox dark v-model="rememberMe">Remember Me</vs-checkbox>
+      <vs-button size="large" type="button" dark transparent to="/forgot"
+        >Forgot Password?
       </vs-button>
-      <vs-button
-        color='#1F1F1F'
-        class='flex-items'
-        type='submit'
-        @click='emailLogin()'
-      >Log In
+      <vs-button dark class="flex-items" type="submit" @click="emailLogin()"
+        >Log In
       </vs-button>
-      <vs-button
-        color='#1F1F1F'
-        class='flex-items'
-        type='submit'
-        @click='googleLogin()'
-      ><i class='bx bxl-google'></i> &nbsp; Log in with Google
+      <vs-button dark class="flex-items" type="submit" @click="googleLogin()"
+        ><i class="bx bxl-google"></i> &nbsp; Log in with Google
       </vs-button>
-      <div class='create'>
+      <div class="create">
         <span>Don't have an account?</span>
-        <vs-button size='large' dark transparent to='/signup'
-        >Create one
+        <vs-button size="large" dark transparent to="/signup"
+          >Create one
         </vs-button>
       </div>
     </form>
@@ -69,18 +61,18 @@ export default {
       },
       set(value) {
         this.$store.commit('user/setRemPref', value)
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       email: '',
       pass: '',
-      passVisible: false
+      passVisible: false,
     }
   },
   methods: {
-    emailLogin: function() {
+    emailLogin: function () {
       // standard email + password login
       this.$fire.auth
         .signInWithEmailAndPassword(this.email, this.pass)
@@ -88,12 +80,21 @@ export default {
           // push user info into vuex and bump to homepage w/ helper
           this.$getUser(result.user.uid)
           this.$router.push('/')
+          this.$vs.notification({
+            color: 'success',
+            title: 'Login Success!',
+            text: 'Welcome to BAT!',
+          })
         })
         .catch((error) => {
-          alert(error.message)
+          this.$vs.notification({
+            color: 'danger',
+            title: 'Login Error',
+            text: error,
+          })
         })
     },
-    googleLogin: function() {
+    googleLogin: function () {
       // google login popup
       const provider = new this.$fireModule.default.auth.GoogleAuthProvider()
       this.$fire.auth
@@ -108,11 +109,20 @@ export default {
             this.$getUser(uid)
           }
           this.$router.push('/')
+          this.$vs.notification({
+            color: 'success',
+            title: 'Login Success!',
+            text: 'Welcome to BAT!',
+          })
         })
         .catch((error) => {
-          alert(error.message)
+          this.$vs.notification({
+            color: 'danger',
+            title: 'Login Error',
+            text: error,
+          })
         })
-    }
+    },
   },
   mounted() {
     // if user chooses to remember email, put email on box
@@ -122,18 +132,18 @@ export default {
     // store email on vuex to remember after logout
     this.$store.commit('user/recordRememberedEmail', this.email)
     next()
-  }
+  },
 }
 </script>
 
 <style lang='scss' scoped>
 .login-content {
   position: relative;
-  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 2;
+  height: 100vh;
 }
 
 h1 {

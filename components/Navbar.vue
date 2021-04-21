@@ -1,11 +1,16 @@
 <template>
-  <vs-navbar shadow square>
+  <vs-navbar shadow fixed>
     <template #left>
-      <vs-button dark to='/'>Home</vs-button>
+      <vs-button transparent dark to='/'>
+        <strong>BAT</strong>
+        <template #animate>
+          <i class="bx bx-home"></i>
+        </template>
+      </vs-button>
     </template>
     <template #right>
       <vs-button dark :disabled='!loggedIn' to='/create'>
-        <i class='bx bx-plus'></i> &nbsp; Create New Recipe
+        <i class='bx bx-plus'></i> &nbsp; Create
       </vs-button>
       <vs-button dark v-if='!loggedIn' to='/login'>Log In</vs-button>
       <vs-button dark v-else @click='logOut'>Log Out</vs-button>
