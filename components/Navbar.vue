@@ -14,6 +14,7 @@
       </vs-button>
       <vs-button dark v-if='!loggedIn' to='/login'>Log In</vs-button>
       <vs-button dark v-else @click='logOut'>Log Out</vs-button>
+      <vs-button dark to='/user'>User</vs-button>
     </template>
   </vs-navbar>
 </template>

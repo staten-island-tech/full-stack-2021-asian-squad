@@ -8,8 +8,8 @@
       @click="getData"
     ></vs-button> -->
     <div class="recipes4u">RECIPES JUST FOR YOU:</div>
-    <img class="image" src="./temp/testImage.jpeg" alt="temporary" />
-    <h1>{{recipes.name}}</h1>
+    <img class="image" src="" alt="temporary" />
+    <h1>{{recipes.name}} Slug Page</h1>
     <div class="tags">{{recipes.ingredients}}</div>
     <NuxtLink to="recipes.slug">Slug Link</NuxtLink>
   </div>
@@ -17,11 +17,6 @@
 
 <script>
 export default {
-  computed: {
-    userData() {
-      return this.$store.state.user.userData
-    },
-  },
   data() {
     return {
       recipes: [],
