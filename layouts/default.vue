@@ -1,20 +1,33 @@
 <template>
-  <div>
-    <Nuxt />
+  <div class="master-container">
+    <div class="bg"></div>
+    <Navbar />
+    <div class="nuxt-container">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
+<script>
+import Navbar from '@/components/Navbar'
+
+export default {
+  components: {
+    Navbar,
+  },
+}
+</script>
+
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Nova+Round&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+* {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -31,32 +44,17 @@ html {
   margin: 0;
 }
 
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
+.bg {
+  position: fixed;
+  z-index: -1;
+  background-size: cover;
+  background-color: #f5a6a6;
+  clip-path: polygon(0 70%, 100% 30%, 100% 100%, 0% 100%);
+  height: 100vh;
+  width: 100vw;
 }
 
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+.nuxt-container > * {
+  padding: 5vh 5vw;
 }
 </style>
