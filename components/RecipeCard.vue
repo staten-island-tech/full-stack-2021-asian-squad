@@ -1,22 +1,18 @@
 <template>
   <div class="outline">
-    <div class="recipes4u">RECIPES JUST FOR YOU:</div>
-    <img class="image" src="./temp/testImage.jpeg" alt="temporary" />
-    <h1>Test Name</h1>
-    <div class="tags">Yummy Delicious 10/10</div>
+    <img class="image" :src="recipeData.imgUrl" alt="temporary" />
+      <h1>{{ recipeData.name }}</h1>
+    <div class="tags">{{ recipeData.desc }}</div>
   </div>
 </template>
 
 <script>
 export default {
-  computed: {
-    userData() {
-      return this.$store.state.user.userData
-    },
-  },
+  props: [
+    'recipeData'
+  ],
   data() {
     return {
-      recipes: [],
     }
   },
   methods: {
@@ -48,7 +44,9 @@ export default {
   padding: 15px;
   width: 250px;
   height: 450px;
+  background-color: rgba(255, 255, 255, 0.20);
 }
+
 .recipes4u {
   font-size: 1.4vh;
   font-weight: 400;

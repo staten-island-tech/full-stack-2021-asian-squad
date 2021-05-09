@@ -1,16 +1,10 @@
 <template>
-  <div class="container">
-    <div v-if="userData">
+  <div class='container'>
+    <div v-if='userData'>
       <h1>Signed In as User: {{ userData.uname }}</h1>
-      <!-- <vs-button color="#1F1F1F" @click="getData()"
-        >Get recipes (Work-in-progress)</vs-button
-      >
-      <ul>
-        <li v-for="recipe in recipes" :key="recipe.ingredients">
-          {{ recipe }}
-        </li>
-      </ul> -->
-      <RecipeCard />
+      <div class='recipe-grid'>
+        <RecipeCard v-for='recipe in recipes' :recipeData='recipe' />
+      </div>
     </div>
     <div v-else>
       <h1>Bone Apple Teeth</h1>
@@ -21,20 +15,31 @@
 
 <script>
 import RecipeCard from '~/components/RecipeCard.vue'
+
 export default {
   components: { RecipeCard },
   computed: {
     userData() {
       return this.$store.state.user.userData
-    },
+    }
+  },
+  created() {
+    this.$fire.firestore
+      .collection('recipes')
+      .get()
+      .then((querySnapshot) =>
+        querySnapshot.forEach((doc) => {
+          this.recipes.push(doc.data())
+        })
+      )
   },
   data() {
     return {
-      recipes: [],
+      recipes: []
     }
   },
   methods: {
-    getData: async function () {
+    getData: async function() {
       const ref = this.$fire.firestore.collection('recipes')
       let querySnapshot
       try {
@@ -46,20 +51,15 @@ export default {
       } catch (e) {
         alert(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-// .container {
-// position: relative;
-// margin: 0 auto;
-// display: flex;
-// flex-direction: column;
-// justify-content: center;
-// align-items: center;
-// text-align: center;
-// TODO
-// }
+<style lang='scss' scoped>
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+//  TODO: make grid responsive or use vuesax
+}
 </style>
