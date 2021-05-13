@@ -91,4 +91,18 @@ export default ({ app, store }, inject) => {
       console.error(error)
     }
   })
+
+  inject('getRecipe', async (recipeId) => {
+    const recipesRef = app.$fire.firestore.collection('recipes')
+
+    try {
+      const recipeData = await recipesRef.doc(recipeId).get()
+      if (recipeData.exists)
+        return recipeData.data()
+      else
+        throw 'Recipe does not exist!'
+    } catch (e) {
+      console.error(e)
+    }
+  })
 }

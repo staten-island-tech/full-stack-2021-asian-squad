@@ -1,11 +1,17 @@
 <template>
   <div class="user-interface">
+<!--    slug below -->
+<!--    <nuxt-child />-->
     <!-- <vs-avatar circle>
       <img src="" alt="">
     </vs-avatar> -->
-    <h1>Hello {{ userData.uname }} </h1>
+    <h1>Hello {{ userData.uname }}</h1>
     <h2>About Me:</h2>
-    <vs-input class="input-container" v-model="value" placeholder="Brief About Me" />
+    <vs-input
+      class="input-container"
+      v-model="value"
+      placeholder="Brief About Me"
+    />
     <h2>Top Recipes:</h2>
   </div>
 </template>
@@ -30,12 +36,12 @@ export default {
 
 <style>
 .user-interface {
- justify-content: center;
- align-items: center;
- text-align: center;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.input-container{
+.input-container {
   display: flex;
   justify-content: center;
   align-items: center;
