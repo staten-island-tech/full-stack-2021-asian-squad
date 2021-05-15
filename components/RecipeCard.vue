@@ -1,68 +1,47 @@
 <template>
-  <div class="outline">
-    <img class="image" :src="recipeData.imgUrl" alt="temporary" />
-      <h1>{{ recipeData.name }}</h1>
-    <div class="tags">{{ recipeData.desc }}</div>
-  </div>
+  <vs-card @click='goToRecipe'>
+    <template #title>
+      <h3> {{ recipeData.name }} </h3>
+    </template>
+<!--    <template #interactions>-->
+<!--      <vs-button :to='recipeLink'>Hello</vs-button>-->
+<!--    </template>-->
+    <template #img>
+      <img :src='recipeData.imgUrl' alt=''>
+    </template>
+    <template #text>
+      <p>{{ recipeData.desc }}</p>
+    </template>
+  </vs-card>
 </template>
 
 <script>
 export default {
   props: [
-    'recipeData'
+    'rawRecipeData'
   ],
   data() {
     return {
+      recipeData: undefined,
+      recipeLink: undefined
     }
   },
-  methods: {
-    getData: async function () {
-      const ref = this.$fire.firestore.collection('recipes')
-      let querySnapshot
-      try {
-        querySnapshot = await ref.get()
-        this.recipes = []
-        querySnapshot.forEach((doc) => {
-          this.recipes.push(doc.data())
-        })
-      } catch (e) {
-        alert(e)
-      }
-    },
+  created() {
+    this.recipeData = this.rawRecipeData.data()
+    this.recipeLink = `/recipe/${this.rawRecipeData.id}`
   },
+  methods: {
+    goToRecipe() {
+      this.$router.push(this.recipeLink)
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-.outline {
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-  border-radius: 25px;
-  border: 2px solid #000000;
-  padding: 15px;
-  width: 250px;
-  height: 450px;
-  background-color: rgba(255, 255, 255, 0.20);
-}
-
-.recipes4u {
-  font-size: 1.4vh;
-  font-weight: 400;
-}
-
-.image {
+<style lang='scss' scoped>
+img {
   object-fit: cover;
-  border-radius: 25px;
-  padding: 15px;
-  width: 250px;
-  height: 350px;
-}
-
-.tags {
-  display: flex;
-  flex-direction: row;
-  padding: 5px;
+  //width: 200px;
+  height: 300px;
 }
 </style>

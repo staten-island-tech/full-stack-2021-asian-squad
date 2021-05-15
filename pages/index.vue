@@ -5,8 +5,8 @@
       <div class="recipe-grid">
         <RecipeCard
           v-for="recipe in recipes"
-          :key="recipe"
-          :recipeData="recipe"
+          :key='recipe.id'
+          :rawRecipeData="recipe"
         />
       </div>
     </div>
@@ -33,7 +33,7 @@ export default {
       .get()
       .then((querySnapshot) =>
         querySnapshot.forEach((doc) => {
-          this.recipes.push(doc.data())
+          this.recipes.push(doc)
         })
       )
   },
@@ -66,7 +66,7 @@ export default {
   grid-template-columns: repeat(4, 1fr);
   //  TODO: make grid responsive or use vuesax
   div {
-    margin: 2rem 0;
+    margin: 1.5rem;
   }
 }
 </style>

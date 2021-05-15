@@ -3,6 +3,8 @@
     Slug: {{ $route.params.slug }}
     <br/>
     Recipe: {{ recipe }}
+    <br/>
+    <img v-if='recipe' :src='recipe.imgUrl' alt=''>
   </div>
 </template>
 
