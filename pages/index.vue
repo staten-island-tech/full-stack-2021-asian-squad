@@ -1,18 +1,17 @@
 <template>
-  <div class="container">
-    <div v-if="userData">
-      <h1>Signed In as User: {{ userData.uname }}</h1>
-      <!-- <vs-button color="#1F1F1F" @click="getData()"
-        >Get recipes (Work-in-progress)</vs-button
-      >
-      <ul>
-        <li v-for="recipe in recipes" :key="recipe.ingredients">
-          {{ recipe }}
-        </li>
-      </ul> -->
-      <RecipeCard />
+  <div class='container'>
+    <div v-if='userData'>
+      <!--      <h1>Signed In as User: {{ userData.uname }}</h1>-->
+      <h1 class='welcome'>Welcome to Bone Apple Teeth, {{ userData.uname }}!</h1>
+      <div class='recipe-grid'>
+        <RecipeCard
+          v-for='recipe in recipes'
+          :key='recipe.id'
+          :rawRecipeData='recipe'
+        />
+      </div>
     </div>
-    <div v-else>
+    <div class='welcome' v-else>
       <h1>Bone Apple Teeth</h1>
       <p>Welcome! Please log in or sign up!</p>
     </div>
@@ -21,20 +20,31 @@
 
 <script>
 import RecipeCard from '~/components/RecipeCard.vue'
+
 export default {
   components: { RecipeCard },
   computed: {
     userData() {
       return this.$store.state.user.userData
-    },
+    }
+  },
+  created() {
+    this.$fire.firestore
+      .collection('recipes')
+      .get()
+      .then((querySnapshot) =>
+        querySnapshot.forEach((doc) => {
+          this.recipes.push(doc)
+        })
+      )
   },
   data() {
     return {
-      recipes: [],
+      recipes: []
     }
   },
   methods: {
-    getData: async function () {
+    getData: async function() {
       const ref = this.$fire.firestore.collection('recipes')
       let querySnapshot
       try {
@@ -46,20 +56,24 @@ export default {
       } catch (e) {
         alert(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
-// .container {
-// position: relative;
-// margin: 0 auto;
-// display: flex;
-// flex-direction: column;
-// justify-content: center;
-// align-items: center;
-// text-align: center;
-// TODO
-// }
+<style lang='scss' scoped>
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 2rem;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.welcome {
+  margin: 1.5rem 0;
+}
 </style>

@@ -1,30 +1,31 @@
 <template>
-  <div class="master-container">
-    <div class="bg"></div>
+  <div class='master-container'>
+    <div class='bg'></div>
+    <div class='bg2'></div>
     <Navbar />
-    <div class="nuxt-container">
+    <div class='nuxt-container'>
       <Nuxt />
     </div>
+    <CreateButton v-if='$route.name!="login" && $route.name!="signup"' class='create-button' />
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar'
+import CreateButton from '@/components/CreateButton'
 
 export default {
   components: {
     Navbar,
+    CreateButton
   },
 }
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nova+Round&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-
 * {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-family: 'Poppins', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
 html {
@@ -54,7 +55,23 @@ html {
   width: 100vw;
 }
 
+.bg2 {
+  position: fixed;
+  z-index: -2;
+  background-size: cover;
+  background-color: #fff7f7;
+  height: 100vh;
+  width: 100vw;
+}
+
 .nuxt-container > * {
   padding: 5vh 5vw;
 }
+
+.create-button {
+  position: fixed;
+  right: 2.5rem;
+  bottom: 2rem;
+}
+
 </style>

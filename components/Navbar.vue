@@ -1,5 +1,5 @@
 <template>
-  <vs-navbar shadow fixed>
+  <vs-navbar class='nav' shadow fixed>
     <template #left>
       <vs-button transparent dark to='/'>
         <strong>BAT</strong>
@@ -9,9 +9,9 @@
       </vs-button>
     </template>
     <template #right>
-      <vs-button dark :disabled='!loggedIn' to='/create'>
-        <i class='bx bx-plus'></i> &nbsp; Create
-      </vs-button>
+<!--      <vs-button dark :disabled='!loggedIn' to='/create'>-->
+<!--        <i class='bx bx-plus'></i> &nbsp; Create-->
+<!--      </vs-button>-->
       <vs-button dark v-if='!loggedIn' to='/login'>Log In</vs-button>
       <vs-button dark v-else @click='logOut'>Log Out</vs-button>
     </template>

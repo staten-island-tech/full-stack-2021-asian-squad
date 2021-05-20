@@ -1,13 +1,13 @@
 <template>
-  
+  <div>
+    Slug: {{ $route.params.slug }}
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
+<style lang='scss' scoped>
 
 </style>

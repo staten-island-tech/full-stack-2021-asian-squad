@@ -2,15 +2,14 @@ export default ({ app, store }, inject) => {
   inject('addUser', async (uid, dsname, email) => {
     // adds new user onto firestore
     const user = {
-      uid,
       uname: dsname,
-      uimg: undefined,
+      uimg: "",
       uemail: email,
       udisc: '',
       preferences: {
-        dark_mode: false,
+        dark_mode: false
       },
-      shopping_list: [],
+      shopping_list: []
     }
 
     const ref = app.$fire.firestore.collection('users').doc(uid)
@@ -21,12 +20,10 @@ export default ({ app, store }, inject) => {
     } catch (e) {
       console.error(e)
     }
-    // add new data onto vuex store
-    store.commit('user/setUserData', user)
   })
 
-  inject('getUser', async (uid, pushStore = true) => {
-    // returns user information stored from firestore, and puts it on vuex by default
+  inject('getUser', async (uid) => {
+    // returns user information stored from firestore, and puts it on vuex
     const ref = app.$fire.firestore.collection('users').doc(uid)
 
     let user
@@ -36,32 +33,20 @@ export default ({ app, store }, inject) => {
       console.error(error)
     }
     const userData = user.data()
-    if (pushStore) store.commit('user/setUserData', userData)
+    store.commit('user/setUserData', userData)
     return userData
   })
 
   inject('addRecipe', async (recipeData) => {
-    // check for all properties of passed object
-    // ugly code but heyyy it works
-    if (
-      !recipeData.name ||
-      !recipeData.desc ||
-      !recipeData.image ||
-      !recipeData.prepTime ||
-      !recipeData.difficulty ||
-      recipeData.ingredients.length < 1 ||
-      recipeData.instructions.length < 1
-    ) {
-      throw 'Recipe is incomplete!'
-    }
-
     const recipeImage = recipeData.image
     delete recipeData.image
-      const metadata = {
-        contentType: 'image/jpeg',
-      }
+    const metadata = {
+      contentType: 'image/jpeg'
+    }
     // current user data
     const { uid, userData } = store.state.user
+    recipeData.user = userData
+    recipeData.user.uid = uid
     // references to storage points
     const imgRef = app.$fire.storage.ref(
       `recipeImages/${userData.uname}/${recipeImage.name}`
@@ -85,10 +70,25 @@ export default ({ app, store }, inject) => {
         name: recipeData.name,
         desc: recipeData.desc,
         imgUrl: recipeData.imgUrl,
-        author: userData.uname,
+        author: userData.uname
       })
     } catch (error) {
       console.error(error)
     }
+  })
+
+  inject('getRecipe', async (recipeId) => {
+    const recipesRef = app.$fire.firestore.collection('recipes')
+
+    let recipeData
+    try {
+      recipeData = await recipesRef.doc(recipeId).get()
+    } catch (e) {
+      console.error(e)
+    }
+    if (recipeData.exists)
+      return recipeData.data()
+    else
+      throw 'Recipe does not exist!'
   })
 }
