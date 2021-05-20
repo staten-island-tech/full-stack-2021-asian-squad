@@ -86,6 +86,7 @@ export default {
         .then((result) => {
           // create firestore entry using helper
           this.$addUser(result.user.uid, this.dsname, this.email)
+          this.$getUser(result.user.uid)
           // bump user to home
           this.$router.push('/')
           this.$vs.notification({
@@ -96,8 +97,8 @@ export default {
         })
         .catch((error) => {
           this.$vs.notification({
-            color: 'success',
-            title: 'SignUp Error',
+            color: 'danger',
+            title: 'Sign Up Error',
             text: error,
           })
         })

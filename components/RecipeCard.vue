@@ -1,11 +1,8 @@
 <template>
   <vs-card @click='goToRecipe'>
     <template #title>
-      <h3> {{ recipeData.name }} </h3>
+      <h2> {{ recipeData.name }} </h2>
     </template>
-<!--    <template #interactions>-->
-<!--      <vs-button :to='recipeLink'>Hello</vs-button>-->
-<!--    </template>-->
     <template #img>
       <img :src='recipeData.imgUrl' alt=''>
     </template>
@@ -41,7 +38,6 @@ export default {
 <style lang='scss' scoped>
 img {
   object-fit: cover;
-  //width: 200px;
   height: 300px;
 }
 </style>

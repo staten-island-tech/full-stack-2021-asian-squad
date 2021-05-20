@@ -1,16 +1,17 @@
 <template>
-  <div class="container">
-    <div v-if="userData">
-      <h1>Signed In as User: {{ userData.uname }}</h1>
-      <div class="recipe-grid">
+  <div class='container'>
+    <div v-if='userData'>
+      <!--      <h1>Signed In as User: {{ userData.uname }}</h1>-->
+      <h1 class='welcome'>Welcome to Bone Apple Teeth, {{ userData.uname }}!</h1>
+      <div class='recipe-grid'>
         <RecipeCard
-          v-for="recipe in recipes"
+          v-for='recipe in recipes'
           :key='recipe.id'
-          :rawRecipeData="recipe"
+          :rawRecipeData='recipe'
         />
       </div>
     </div>
-    <div v-else>
+    <div class='welcome' v-else>
       <h1>Bone Apple Teeth</h1>
       <p>Welcome! Please log in or sign up!</p>
     </div>
@@ -25,7 +26,7 @@ export default {
   computed: {
     userData() {
       return this.$store.state.user.userData
-    },
+    }
   },
   created() {
     this.$fire.firestore
@@ -39,11 +40,11 @@ export default {
   },
   data() {
     return {
-      recipes: [],
+      recipes: []
     }
   },
   methods: {
-    getData: async function () {
+    getData: async function() {
       const ref = this.$fire.firestore.collection('recipes')
       let querySnapshot
       try {
@@ -55,18 +56,24 @@ export default {
       } catch (e) {
         alert(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
 <style lang='scss' scoped>
 .recipe-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  //  TODO: make grid responsive or use vuesax
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 2rem;
   div {
-    margin: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+}
+
+.welcome {
+  margin: 1.5rem 0;
 }
 </style>
