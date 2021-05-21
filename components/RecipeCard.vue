@@ -1,26 +1,42 @@
 <template>
-  <vs-card @click='goToRecipe'>
+  <vs-card @click="goToRecipe">
     <template #title>
-      <h2> {{ recipeData.name }} </h2>
+      <h2>{{ recipeData.name }}</h2>
     </template>
     <template #img>
-      <img :src='recipeData.imgUrl' alt=''>
+      <img class="recipeImage" :src="recipeData.imgUrl" alt="" />
     </template>
     <template #text>
       <p>{{ recipeData.desc }}</p>
+    </template>
+    <template #interactions>
+      <vs-button dark v-if="recipeData.author">
+        <!-- testing -->
+        <img
+          class="profileImage"
+          v-if="recipeData.author.uimg"
+          :src="recipeData.author.uimg"
+          alt=""
+        />
+        <img
+          class="profileImage"
+          v-else
+          src="@/assets/noProfilePic.png"
+          alt=""
+        />
+        {{ recipeData.author.uname }}
+      </vs-button>
     </template>
   </vs-card>
 </template>
 
 <script>
 export default {
-  props: [
-    'rawRecipeData'
-  ],
+  props: ['rawRecipeData'],
   data() {
     return {
       recipeData: undefined,
-      recipeLink: undefined
+      recipeLink: undefined,
     }
   },
   created() {
@@ -30,14 +46,21 @@ export default {
   methods: {
     goToRecipe() {
       this.$router.push(this.recipeLink)
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang='scss' scoped>
-img {
+.recipeImage {
   object-fit: cover;
   height: 300px;
+}
+
+.profileImage {
+  height: 20px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 100%;
 }
 </style>

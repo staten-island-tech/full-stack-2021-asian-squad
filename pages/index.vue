@@ -1,19 +1,23 @@
 <template>
-  <div class='container'>
-    <div v-if='userData'>
-      <!--      <h1>Signed In as User: {{ userData.uname }}</h1>-->
-      <h1 class='welcome'>Welcome to Bone Apple Teeth, {{ userData.uname }}!</h1>
-      <div class='recipe-grid'>
+  <div class="container">
+    <div v-if="userData">
+      <div class="welcome">
+        <h1>
+          Welcome to Bone Apple Teeth, {{ userData.uname }}!
+        </h1>
+        <p>Start viewing amazing recipes curated for you!</p>
+      </div>
+      <div class="recipe-grid">
         <RecipeCard
-          v-for='recipe in recipes'
-          :key='recipe.id'
-          :rawRecipeData='recipe'
+          v-for="recipe in recipes"
+          :key="recipe.id"
+          :rawRecipeData="recipe"
         />
       </div>
     </div>
-    <div class='welcome' v-else>
-      <h1>Bone Apple Teeth</h1>
-      <p>Welcome! Please log in or sign up!</p>
+    <div class="welcome" v-else>
+      <h1>Welcome to Bone Apple Teeth!</h1>
+      <p>To begin viewing amazing recipes from the BAT community, please log in or sign up.</p>
     </div>
   </div>
 </template>
@@ -26,7 +30,7 @@ export default {
   computed: {
     userData() {
       return this.$store.state.user.userData
-    }
+    },
   },
   created() {
     this.$fire.firestore
@@ -40,11 +44,11 @@ export default {
   },
   data() {
     return {
-      recipes: []
+      recipes: [],
     }
   },
   methods: {
-    getData: async function() {
+    getData: async function () {
       const ref = this.$fire.firestore.collection('recipes')
       let querySnapshot
       try {
@@ -56,8 +60,8 @@ export default {
       } catch (e) {
         alert(e)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

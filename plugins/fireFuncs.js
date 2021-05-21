@@ -3,13 +3,13 @@ export default ({ app, store }, inject) => {
     // adds new user onto firestore
     const user = {
       uname: dsname,
-      uimg: "",
+      uimg: '',
       uemail: email,
       udisc: '',
       preferences: {
-        dark_mode: false
+        dark_mode: false,
       },
-      shopping_list: []
+      shopping_list: [],
     }
 
     const ref = app.$fire.firestore.collection('users').doc(uid)
@@ -41,12 +41,15 @@ export default ({ app, store }, inject) => {
     const recipeImage = recipeData.image
     delete recipeData.image
     const metadata = {
-      contentType: 'image/jpeg'
+      contentType: 'image/jpeg',
     }
     // current user data
     const { uid, userData } = store.state.user
-    recipeData.user = userData
-    recipeData.user.uid = uid
+    recipeData.author = {
+      uname: userData.uname,
+      uimg: userData.uimg,
+    }
+    recipeData.authorId = uid
     // references to storage points
     const imgRef = app.$fire.storage.ref(
       `recipeImages/${userData.uname}/${recipeImage.name}`
@@ -70,7 +73,6 @@ export default ({ app, store }, inject) => {
         name: recipeData.name,
         desc: recipeData.desc,
         imgUrl: recipeData.imgUrl,
-        author: userData.uname
       })
     } catch (error) {
       console.error(error)
@@ -86,9 +88,7 @@ export default ({ app, store }, inject) => {
     } catch (e) {
       console.error(e)
     }
-    if (recipeData.exists)
-      return recipeData.data()
-    else
-      throw 'Recipe does not exist!'
+    if (recipeData.exists) return recipeData.data()
+    else throw 'Recipe does not exist!'
   })
 }

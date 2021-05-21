@@ -1,114 +1,114 @@
 <template>
-  <div class='create-content'>
+  <div class="create-content">
     <h1>Create New Recipe</h1>
     <!-- form for input -->
-    <div class='input-container'>
+    <div class="input-container">
       <!--input for file-->
       <vs-button
-        class='main-buttons'
+        class="main-buttons"
         floating
-        size='large'
+        size="large"
         dark
-        @click='pickFile'
+        @click="pickFile"
       >
-        <i class='bx bx-plus'></i> &nbsp; Add/Change Image
+        <i class="bx bx-plus"></i> &nbsp; Add/Change Image
       </vs-button>
       <input
-        type='file'
-        class='file-input'
-        ref='fileInput'
-        accept='image/*'
-        @change='onFilePicked'
+        type="file"
+        class="file-input"
+        ref="fileInput"
+        accept="image/*"
+        @change="onFilePicked"
       />
       <!-- name -->
-      <vs-input label-placeholder='Recipe Name' v-model='name' />
+      <vs-input label-placeholder="Recipe Name" v-model="name" />
       <!-- description -->
-      <vs-input label-placeholder='Description' v-model='description' />
+      <vs-input label-placeholder="Description" v-model="description" />
       <!-- prep time -->
       <vs-input
-        type='number'
-        label-placeholder='Prep Time (minutes)'
-        v-model='prepTime'
+        type="number"
+        label-placeholder="Prep Time (minutes)"
+        v-model="prepTime"
       >
-        <template v-if='prepTime < 1' #message-primary>
+        <template v-if="prepTime < 1" #message-primary>
           Please input a positive number
         </template>
       </vs-input>
       <!-- difficulty -->
-      <vs-select label-placeholder='Cooking Difficulty' v-model='difficulty'>
-        <vs-option label='Easy' value='1'> Easy</vs-option>
-        <vs-option label='Intermediate' value='2'> Intermediate</vs-option>
-        <vs-option label='Hard' value='3'> Hard</vs-option>
-        <vs-option label='Gordon Ramsay' value='4'> Gordon Ramsay</vs-option>
+      <vs-select label-placeholder="Cooking Difficulty" v-model="difficulty">
+        <vs-option label="Easy" value="1"> Easy</vs-option>
+        <vs-option label="Intermediate" value="2"> Intermediate</vs-option>
+        <vs-option label="Hard" value="3"> Hard</vs-option>
+        <vs-option label="Gordon Ramsay" value="4"> Gordon Ramsay</vs-option>
       </vs-select>
       <!-- ingredient -->
       <vs-input
         icon-after
-        @click-icon='addIngredient'
-        @keypress.enter='addIngredient'
-        label-placeholder='Add Ingredients'
-        v-model='ingredient'
+        @click-icon="addIngredient"
+        @keypress.enter="addIngredient"
+        label-placeholder="Add Ingredients"
+        v-model="ingredient"
       >
         <template #icon>
-          <i class='bx bx-plus'></i>
+          <i class="bx bx-plus"></i>
         </template>
         <template v-if="ingredient !== ''" #message-primary>
-          Click on <i class='bx bx-plus'></i> to add ingredient
+          Click on <i class="bx bx-plus"></i> to add ingredient
         </template>
       </vs-input>
       <!-- instruction -->
       <vs-input
         icon-after
-        @click-icon='addInstruction'
-        @keypress.enter='addInstruction'
-        label-placeholder='Add Instructions'
-        v-model='instruction'
+        @click-icon="addInstruction"
+        @keypress.enter="addInstruction"
+        label-placeholder="Add Instructions"
+        v-model="instruction"
       >
         <template #icon>
-          <i class='bx bx-plus'></i>
+          <i class="bx bx-plus"></i>
         </template>
         <template v-if="instruction !== ''" #message-primary>
-          Click on <i class='bx bx-plus'></i> to add instruction
+          Click on <i class="bx bx-plus"></i> to add instruction
         </template>
       </vs-input>
     </div>
     <!-- preview pane shows when data exists -->
     <div
-      v-if='
+      v-if="
         ingredientsArr.length > 0 ||
         instructionsArr.length > 0 ||
         image != undefined
-      '
-      class='preview'
+      "
+      class="preview"
     >
       <h2>Preview</h2>
       <!-- image preview -->
-      <img id='recipeImage' v-if='image' :src='imageURL' alt='Recipe Image' />
+      <img id="recipeImage" v-if="image" :src="imageURL" alt="Recipe Image" />
       <!-- ingredient/instruction preview -->
-      <div class='preview-lists'>
-        <div v-if='ingredientsArr.length > 0' id='ingredients-list'>
+      <div class="preview-lists">
+        <div v-if="ingredientsArr.length > 0" id="ingredients-list">
           <h3>Ingredients</h3>
           <ul>
             <li
-              v-for='(ingredient, i) in ingredientsArr'
-              :key='i'
-              @click='
+              v-for="(ingredient, i) in ingredientsArr"
+              :key="i"
+              @click="
                 ;(editActive = true), (selArr = ingredientsArr), (selIndex = i)
-              '
+              "
             >
               {{ ingredient }}
             </li>
           </ul>
         </div>
-        <div v-if='instructionsArr.length > 0' id='instructions-list'>
+        <div v-if="instructionsArr.length > 0" id="instructions-list">
           <h3>Instructions</h3>
           <ol>
             <li
-              v-for='(instruction, i) in instructionsArr'
-              :key='i'
-              @click='
+              v-for="(instruction, i) in instructionsArr"
+              :key="i"
+              @click="
                 ;(editActive = true), (selArr = instructionsArr), (selIndex = i)
-              '
+              "
             >
               {{ instruction }}
             </li>
@@ -117,28 +117,26 @@
       </div>
       <!-- editing dialog -->
       <vs-dialog
-        class='dialogs'
-        v-model='editActive'
-        @close='dialogCloseCheck(selArr, selIndex)'
+        class="dialogs"
+        v-model="editActive"
+        @close="dialogCloseCheck(selArr, selIndex)"
       >
         <template #header> Edit Item</template>
         <vs-input
-          v-model='selArr[selIndex]'
-          class='dialog-input'
-          @keypress.enter='dialogCloseCheck(selArr, selIndex)'
+          v-model="selArr[selIndex]"
+          class="dialog-input"
+          @keypress.enter="dialogCloseCheck(selArr, selIndex)"
         />
-        <template #footer class='dialog-buttons'>
-          <div class='dialog-buttons'>
-            <vs-button @click='dialogCloseCheck(selArr, selIndex)'
-            >Save
-            </vs-button
-            >
+        <template #footer class="dialog-buttons">
+          <div class="dialog-buttons">
+            <vs-button @click="dialogCloseCheck(selArr, selIndex)"
+              >Save
+            </vs-button>
             <vs-button
               danger
-              @click='selArr.splice(selIndex, 1), (editActive = false)'
-            >Delete
-            </vs-button
-            >
+              @click="selArr.splice(selIndex, 1), (editActive = false)"
+              >Delete
+            </vs-button>
           </div>
         </template>
       </vs-dialog>
@@ -146,12 +144,12 @@
     <!-- upload/submit button -->
     <vs-button
       dark
-      class='main-buttons'
+      class="main-buttons"
       floating
-      size='large'
-      type='submit'
-      @click='createRecipe'
-    >Upload
+      size="large"
+      type="submit"
+      @click="createRecipe"
+      >Upload
     </vs-button>
   </div>
 </template>
@@ -174,7 +172,7 @@ export default {
       imageURL: undefined,
       editActive: false,
       selArr: '',
-      selIndex: undefined
+      selIndex: undefined,
     }
   },
   methods: {
@@ -224,18 +222,16 @@ export default {
         color: 'danger',
         title: 'Recipe Upload Error',
         text: error,
-        position: 'top-center'
+        position: 'top-center',
       })
-
     },
     createRecipe() {
       // prevent upload if invalid data
-      if (!this.isDataValid())
-        return
+      if (!this.isDataValid()) return
       // open loading
       const loading = this.$vs.loading({
         text: 'Uploading Recipe...',
-        color: 'dark'
+        color: 'dark',
       })
       const recipeData = {
         name: this.name,
@@ -244,7 +240,7 @@ export default {
         instructions: this.instructionsArr,
         prepTime: parseInt(this.prepTime),
         difficulty: parseInt(this.difficulty),
-        image: this.image
+        image: this.image,
       }
       // use helper function
       this.$addRecipe(recipeData)
@@ -254,7 +250,7 @@ export default {
             color: 'success',
             title: 'Recipe Created!',
             text: 'Your recipe has been created!',
-            position: 'top-center'
+            position: 'top-center',
           })
         })
         .catch((error) => {
@@ -262,7 +258,7 @@ export default {
             color: 'danger',
             title: 'Recipe Upload Error',
             text: error,
-            position: 'top-center'
+            position: 'top-center',
           })
         })
       loading.close()
@@ -277,8 +273,8 @@ export default {
       this.imageURL = URL.createObjectURL(file)
       // update vue data object
       this.image = file
-    }
-  }
+    },
+  },
 }
 </script>
 
