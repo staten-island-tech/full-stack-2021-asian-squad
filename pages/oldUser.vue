@@ -1,39 +1,38 @@
 <template>
-  <div class='user-interface'>
-    Slug: {{ $route.params.slug }}
+  <div class="user-interface">
     <h1>Hello {{ userData.uname }}</h1>
     <h2>Description: {{ userData.udisc }}</h2>
-    <vs-button @click='active = !active'>User Settings</vs-button>
+    <vs-button @click="active = !active">User Settings</vs-button>
 
-    <vs-dialog v-model='active'>
+    <vs-dialog v-model="active">
       <template #header>
-        <h4 class='not-margin'>Welcome to <b>BAT</b></h4>
+        <h4 class="not-margin">Welcome to <b>BAT</b></h4>
       </template>
 
-      <div class='con-form'>
-        <vs-input v-model='email' placeholder='Email'>
-          <template #icon> @</template>
+      <div class="con-form">
+        <vs-input v-model="email" placeholder="Email">
+          <template #icon> @ </template>
         </vs-input>
-        <vs-input type='bio' v-model='value' placeholder='Bio'>
+        <vs-input type="bio" v-model="value" placeholder="Bio">
           <template #icon>
-            <i class='bx bx-user'></i>
+            <i class="bx bx-user"></i>
           </template>
         </vs-input>
       </div>
 
       <template #footer>
-        <div class='footer-dialog'>
-          <vs-button block> Save</vs-button>
+        <div class="footer-dialog">
+          <vs-button block> Save </vs-button>
         </div>
       </template>
     </vs-dialog>
 
     <h2>Top Recipes:</h2>
-    <div class='recipe-grid'>
+    <div class="recipe-grid">
       <RecipeCard
-        v-for='recipe in userRecipes'
-        :key='recipe.id'
-        :rawRecipeData='recipe'
+        v-for="recipe in userRecipes"
+        :key="recipe.id"
+        :rawRecipeData="recipe"
       />
     </div>
   </div>
@@ -41,25 +40,29 @@
 
 <script>
 import RecipeCard from '~/components/RecipeCard.vue'
-
 export default {
   components: { RecipeCard },
+  computed: {
+    userData() {
+      return this.$store.state.user.userData
+    },
+    uid() {
+      return this.$store.state.user.uid
+    },
+  },
   data() {
     return {
       userRecipes: [],
-      userData: '',
       value: null,
       active: false,
       email: '',
       password: '',
-      remember: false
+      remember: false,
     }
   },
   async created() {
-    const userId = this.$route.params.slug
-    this.userData = await this.$getUser(userId, false)
-    this.userRecipes = await this.$getUserRecipes(userId)
-  }
+    this.userRecipes = await this.$getUserRecipes(this.uid)
+  },
 }
 </script>
 
@@ -68,14 +71,12 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   grid-gap: 2rem;
-
   div {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 }
-
 .user-interface {
   justify-content: center;
   align-items: center;

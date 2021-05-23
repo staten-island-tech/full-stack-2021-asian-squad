@@ -22,7 +22,7 @@ export default ({ app, store }, inject) => {
     }
   })
 
-  inject('getUser', async (uid) => {
+  inject('getUser', async (uid, commit = true) => {
     // returns user information stored from firestore, and puts it on vuex
     const ref = app.$fire.firestore.collection('users').doc(uid)
 
@@ -33,7 +33,7 @@ export default ({ app, store }, inject) => {
       console.error(error)
     }
     const userData = user.data()
-    store.commit('user/setUserData', userData)
+    if (commit) store.commit('user/setUserData', userData)
     return userData
   })
 
@@ -69,7 +69,7 @@ export default ({ app, store }, inject) => {
 
       // create reference to user document
       await userRef.add({
-        ref: recipeRef,
+        ref: recipeRef.id,
         name: recipeData.name,
         desc: recipeData.desc,
         imgUrl: recipeData.imgUrl,
@@ -90,5 +90,14 @@ export default ({ app, store }, inject) => {
     }
     if (recipeData.exists) return recipeData.data()
     else throw 'Recipe does not exist!'
+  })
+
+  inject('getUserRecipes', async (uid) => {
+    let resArr = []
+    const querySnapshot = await app.$fire.firestore
+      .collection(`users/${uid}/created-recipes`)
+      .get()
+    querySnapshot.forEach((doc) => resArr.push(doc))
+    return resArr
   })
 }
