@@ -65,7 +65,7 @@ html {
 }
 
 .nuxt-container > * {
-  padding: 5vh 5vw;
+  padding: 6vh 3vw;
 }
 
 .create-button {
