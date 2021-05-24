@@ -9,7 +9,7 @@
       </vs-button>
     </template>
     <template #right>
-      <vs-button dark @click='goToUserProfile'
+      <vs-button dark to='/profile'
       ><i class='bx bx-user'></i> &nbsp; Profile
       </vs-button
       >
@@ -34,9 +34,6 @@ export default {
       this.$fire.auth.signOut()
       this.$router.push('/')
     },
-    goToUserProfile() {
-      this.$router.push(`/user/${this.uid}`)
-    }
   }
 }
 </script>

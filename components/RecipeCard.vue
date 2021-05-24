@@ -52,7 +52,6 @@ export default {
   },
   created() {
     this.recipeData = this.rawRecipeData.data()
-    // console.log(this.recipeData.ref);
     if (this.recipeData.ref) this.recipeLink = `/recipe/${this.recipeData.ref}`
     else this.recipeLink = `/recipe/${this.rawRecipeData.id}`
     this.userLink = `/user/${this.recipeData.authorId}`
@@ -61,9 +60,6 @@ export default {
     goToRecipe() {
       this.$router.push(this.recipeLink)
     },
-    goToUser() {
-      this.$router.push(this.userLink)
-    }
   }
 }
 </script>

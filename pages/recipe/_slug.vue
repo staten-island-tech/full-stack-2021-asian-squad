@@ -1,10 +1,25 @@
 <template>
-  <div class='container'>
+  <div class='container' v-if='recipe'>
     <div class='subContainer hero'>
       <img class='recipeImg' v-if='recipe' :src='recipe.imgUrl' alt=''>
       <div class='titleInfo'>
         <h1> {{ recipe.name }} </h1>
         <h3> {{ recipe.desc }} </h3>
+        <vs-button transparent dark class='author' :to='userLink'>
+          <img
+            class='profileImage'
+            v-if='recipe.author.uimg'
+            :src='recipe.author.uimg'
+            alt=''
+          />
+          <img
+            class='profileImage'
+            v-else
+            src='@/assets/noProfilePic.png'
+            alt=''
+          />
+          {{ recipe.author.uname }}
+        </vs-button>
       </div>
     </div>
     <div class='subContainer information'>
@@ -32,7 +47,8 @@ export default {
     return {
       recipe: '',
       ingredients: [],
-      instructions: []
+      instructions: [],
+      userLink: undefined,
     }
   },
   async created() {
@@ -40,6 +56,7 @@ export default {
     this.recipe = await this.$getRecipe(recipeId)
     this.ingredients = this.recipe.ingredients
     this.instructions = this.recipe.instructions
+    this.userLink = `/user/${this.recipe.authorId}`
   }
 }
 </script>
@@ -47,25 +64,45 @@ export default {
 <style lang='scss' scoped>
 .subContainer {
   display: grid;
-  h1 {
-    font-weight: 700;
-  }
-
+  grid-gap: 2rem;
+}
+.hero {
   @media (min-width: 1200px) {
     grid-template-columns: 3fr 2fr;
     .titleInfo {
       padding: 3rem 0;
     }
   }
-  grid-gap: 2rem;
+}
+
+.information {
+  @media (min-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .recipeImg {
   margin: auto;
   height: 60vh;
   background-color: white;
-  //width: 100%;
   border-radius: 20px;
+}
+
+.titleInfo {
+  > h1 {
+    padding: 1rem 0;
+  }
+
+  .author {
+    margin: 2rem 0;
+  }
+
+  .profileImage {
+    height: 50px;
+    width: auto;
+    margin-right: 10px;
+    border-radius: 100%;
+  }
 }
 
 .information {
