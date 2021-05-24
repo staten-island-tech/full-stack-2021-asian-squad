@@ -86,6 +86,10 @@ export default {
   height: 60vh;
   background-color: white;
   border-radius: 20px;
+  @media (max-width: 900px) {
+    height: auto;
+    width: 100%;
+  }
 }
 
 .titleInfo {

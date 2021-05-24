@@ -1,23 +1,24 @@
 <template>
-  <div class="container">
-    <div v-if="userData">
-      <div class="welcome">
+  <div class='container'>
+    <div v-if='userData'>
+      <div class='welcome'>
         <h1>
           Welcome to Bone Apple Teeth, {{ userData.uname }}!
         </h1>
         <p>Start viewing amazing recipes curated for you!</p>
       </div>
-      <div class="recipe-grid">
+      <div class='recipe-grid'>
         <RecipeCard
-          v-for="recipe in recipes"
-          :key="recipe.id"
-          :rawRecipeData="recipe"
+          v-for='recipe in recipes'
+          :key='recipe.id'
+          :rawRecipeData='recipe'
         />
       </div>
     </div>
-    <div class="welcome" v-else>
+    <div class='welcome notLogged' v-else>
       <h1>Welcome to Bone Apple Teeth!</h1>
       <p>To begin viewing amazing recipes from the BAT community, please log in or sign up.</p>
+      <vs-button size='large' dark to='/login'>Log In</vs-button>
     </div>
   </div>
 </template>
@@ -30,7 +31,7 @@ export default {
   computed: {
     userData() {
       return this.$store.state.user.userData
-    },
+    }
   },
   created() {
     this.$fire.firestore
@@ -44,11 +45,11 @@ export default {
   },
   data() {
     return {
-      recipes: [],
+      recipes: []
     }
   },
   methods: {
-    getData: async function () {
+    getData: async function() {
       const ref = this.$fire.firestore.collection('recipes')
       let querySnapshot
       try {
@@ -60,8 +61,8 @@ export default {
       } catch (e) {
         alert(e)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -70,6 +71,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   grid-gap: 2rem;
+
   div {
     display: flex;
     justify-content: center;
@@ -79,5 +81,17 @@ export default {
 
 .welcome {
   margin: 1.5rem 0;
+}
+
+.notLogged {
+  font-size: 2rem;
+  p {
+    font-size: 1.75rem;
+  }
+  text-align: center;
+  height: 100%;
+  .vs-button {
+    margin: 2rem auto;
+  }
 }
 </style>

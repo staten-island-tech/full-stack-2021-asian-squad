@@ -6,7 +6,7 @@
     <div class='nuxt-container'>
       <Nuxt />
     </div>
-    <CreateButton v-if='$route.name!="login" && $route.name!="signup"' class='create-button' />
+    <CreateButton v-if='$route.name!=="login" && $route.name!=="signup"' class='create-button' />
   </div>
 </template>
 
@@ -73,5 +73,13 @@ html {
   right: 2.5rem;
   bottom: 2rem;
 }
-
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+  transform: translate3d(0, 15px, 0);
+}
 </style>

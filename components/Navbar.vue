@@ -9,7 +9,7 @@
       </vs-button>
     </template>
     <template #right>
-      <vs-button dark to='/profile'
+      <vs-button v-if='loggedIn' dark to='/profile'
       ><i class='bx bx-user'></i> &nbsp; Profile
       </vs-button
       >

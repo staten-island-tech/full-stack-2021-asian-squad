@@ -36,13 +36,14 @@
         />
         {{ recipeData.author.uname }}
       </vs-button>
+      <vs-button v-if='isDeletable' danger><i class='bx bx-trash'></i></vs-button>
     </template>
   </vs-card>
 </template>
 
 <script>
 export default {
-  props: ['rawRecipeData'],
+  props: ['rawRecipeData', 'isDeletable'],
   data() {
     return {
       recipeData: undefined,
@@ -59,7 +60,7 @@ export default {
   methods: {
     goToRecipe() {
       this.$router.push(this.recipeLink)
-    },
+    }
   }
 }
 </script>

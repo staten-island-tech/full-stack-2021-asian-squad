@@ -1,69 +1,31 @@
 <template>
-  <div class='user-interface'>
-    Slug: {{ $route.params.slug }}
-    <h1>Hello {{ userData.uname }}</h1>
-    <h2>Description: {{ userData.udisc }}</h2>
-    <vs-button @click='active = !active'>User Settings</vs-button>
-
-    <vs-dialog v-model='active'>
-      <template #header>
-        <h4 class='not-margin'>Welcome to <b>BAT</b></h4>
-      </template>
-
-      <div class='con-form'>
-        <vs-input v-model='email' placeholder='Email'>
-          <template #icon> @</template>
-        </vs-input>
-        <vs-input type='bio' v-model='value' placeholder='Bio'>
-          <template #icon>
-            <i class='bx bx-user'></i>
-          </template>
-        </vs-input>
-      </div>
-
-      <template #footer>
-        <div class='footer-dialog'>
-          <vs-button block> Save</vs-button>
-        </div>
-      </template>
-    </vs-dialog>
-
-    <h2>Top Recipes:</h2>
-    <div class='recipe-grid'>
-      <RecipeCard
-        v-for='recipe in userRecipes'
-        :key='recipe.id'
-        :rawRecipeData='recipe'
-      />
-    </div>
-  </div>
+  <UserProfile :user-id='uid' />
 </template>
 
 <script>
-import RecipeCard from '~/components/RecipeCard.vue'
+import UserProfile from '~/components/userProfile'
 
 export default {
-  components: { RecipeCard },
+  components: { UserProfile },
   data() {
     return {
-      userRecipes: [],
-      userData: '',
-      value: null,
-      active: false,
-      email: '',
-      password: '',
-      remember: false
+      uid: '',
     }
   },
-  async created() {
-    const userId = this.$route.params.slug
-    this.userData = await this.$getUser(userId, false)
-    this.userRecipes = await this.$getUserRecipes(userId)
+  created() {
+    this.uid = this.$route.params.slug
   }
 }
 </script>
 
 <style lang='scss' scoped>
+.profileImage {
+  height: 50px;
+  width: auto;
+  margin-right: 10px;
+  border-radius: 100%;
+}
+
 .recipe-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -74,12 +36,6 @@ export default {
     justify-content: center;
     align-items: center;
   }
-}
-
-.user-interface {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
 .input-container {
@@ -93,14 +49,10 @@ export default {
   font-size: 2rem;
 }
 
-
-h1 {
-  font-size: 2rem;
-  margin: 1rem;
-}
-
-h2 {
-  font-size: 1rem;
-  margin: 1rem;
+.settings {
+  transform: scale(1.3);
+  position: fixed;
+  left: 2.5rem;
+  bottom: 2rem;
 }
 </style>
