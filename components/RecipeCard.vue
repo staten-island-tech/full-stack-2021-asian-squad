@@ -36,7 +36,7 @@
         />
         {{ recipeData.author.uname }}
       </vs-button>
-      <vs-button v-if='isDeletable' danger><i class='bx bx-trash'></i></vs-button>
+      <vs-button @click='deleteRecipe' v-if='isDeletable' danger><i class='bx bx-trash'></i></vs-button>
     </template>
   </vs-card>
 </template>
@@ -53,13 +53,35 @@ export default {
   },
   created() {
     this.recipeData = this.rawRecipeData.data()
-    if (this.recipeData.ref) this.recipeLink = `/recipe/${this.recipeData.ref}`
-    else this.recipeLink = `/recipe/${this.rawRecipeData.id}`
+    // if (this.recipeData.ref) this.recipeLink = `/recipe/${this.recipeData.ref}`
+    // else this.recipeLink = `/recipe/${this.rawRecipeData.id}`
+    this.recipeLink = `/recipe/${this.rawRecipeData.id}`
     this.userLink = `/user/${this.recipeData.authorId}`
   },
   methods: {
     goToRecipe() {
       this.$router.push(this.recipeLink)
+    },
+    deleteRecipe() {
+      if (!(confirm('Are you sure you want to delete?'))) return
+
+      this.$deleteRecipe(this.rawRecipeData.id).then(() => {
+        this.$router.go()
+        this.$vs.notification({
+          color: 'success',
+          title: 'Recipe Deleted',
+          text: 'Your recipe has been deleted.',
+          position: 'top-center'
+        })
+      })
+        .catch((error) => {
+          this.$vs.notification({
+            color: 'danger',
+            title: 'Recipe Delete Error',
+            text: error,
+            position: 'top-center',
+          })
+        })
     }
   }
 }

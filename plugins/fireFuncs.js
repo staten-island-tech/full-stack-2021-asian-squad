@@ -7,9 +7,9 @@ export default ({ app, store }, inject) => {
       uemail: email,
       udisc: '',
       preferences: {
-        dark_mode: false,
+        dark_mode: false
       },
-      shopping_list: [],
+      shopping_list: []
     }
 
     const ref = app.$fire.firestore.collection('users').doc(uid)
@@ -41,13 +41,13 @@ export default ({ app, store }, inject) => {
     const recipeImage = recipeData.image
     delete recipeData.image
     const metadata = {
-      contentType: 'image/jpeg',
+      contentType: 'image/jpeg'
     }
     // current user data
     const { uid, userData } = store.state.user
     recipeData.author = {
       uname: userData.uname,
-      uimg: userData.uimg,
+      uimg: userData.uimg
     }
     recipeData.authorId = uid
     // references to storage points
@@ -57,7 +57,7 @@ export default ({ app, store }, inject) => {
     const recipeRef = app.$fire.firestore.collection('recipes').doc()
     const userRef = app.$fire.firestore.collection(
       `users/${uid}/created-recipes`
-    )
+    ).doc(recipeRef.id)
 
     try {
       // store image on firebase storage
@@ -68,11 +68,11 @@ export default ({ app, store }, inject) => {
       await recipeRef.set(recipeData)
 
       // create reference to user document
-      await userRef.add({
+      await userRef.set({
         ref: recipeRef.id,
         name: recipeData.name,
         desc: recipeData.desc,
-        imgUrl: recipeData.imgUrl,
+        imgUrl: recipeData.imgUrl
       })
     } catch (error) {
       console.error(error)
@@ -99,5 +99,14 @@ export default ({ app, store }, inject) => {
       .get()
     querySnapshot.forEach((doc) => resArr.push(doc))
     return resArr
+  })
+
+  inject('deleteRecipe', async (recipeId) => {
+    try {
+      await app.$fire.firestore.doc(`recipes/${recipeId}`).delete()
+      await app.$fire.firestore.doc(`users/${store.state.user.uid}/created-recipes/${recipeId}`).delete()
+    } catch (e) {
+      console.error(e)
+    }
   })
 }

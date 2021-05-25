@@ -1,5 +1,5 @@
 <template>
-  <vs-button class='button' dark circle :disabled='!loggedIn' to='/create'>
+  <vs-button class='button' dark circle v-if='loggedIn' to='/create'>
     <i class='bx bx-plus'></i> &nbsp; Create
   </vs-button>
 </template>

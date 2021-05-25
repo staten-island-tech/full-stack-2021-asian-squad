@@ -27,7 +27,7 @@
       <!-- prep time -->
       <vs-input
         type="number"
-        label-placeholder="Prep Time (minutes)"
+        label-placeholder="Prep & Cook Time (minutes)"
         v-model="prepTime"
       >
         <template v-if="prepTime < 1" #message-primary>
@@ -77,7 +77,7 @@
       v-if="
         ingredientsArr.length > 0 ||
         instructionsArr.length > 0 ||
-        image != undefined
+        image !== undefined
       "
       class="preview"
     >
@@ -345,5 +345,15 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+// remove number input arrows
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>

@@ -16,10 +16,10 @@
       <h1>{{ userData.uname }}</h1>
       <h2 v-if='userData.udisc'>{{ userData.udisc }}</h2>
     </div>
-    <vs-button v-if='isCurrentUser' dark circle class='settings' @click='active = !active'>
-      <i class='bx bx-cog'></i> &nbsp;
-      User Settings
-    </vs-button>
+<!--    <vs-button v-if='isCurrentUser' dark circle class='settings' @click='active = !active'>-->
+<!--      <i class='bx bx-cog'></i> &nbsp;-->
+<!--      User Settings-->
+<!--    </vs-button>-->
     <div class='separator'>
       <hr>
     </div>

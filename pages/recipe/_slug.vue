@@ -5,6 +5,8 @@
       <div class='titleInfo'>
         <h1> {{ recipe.name }} </h1>
         <h3> {{ recipe.desc }} </h3>
+        <h4> Prep & Cook Time: {{ recipe.prepTime }} minutes </h4>
+        <h4> Difficulty: {{ difficulty }} </h4>
         <vs-button transparent dark class='author' :to='userLink'>
           <img
             class='profileImage'
@@ -21,6 +23,9 @@
           {{ recipe.author.uname }}
         </vs-button>
       </div>
+    </div>
+    <div class='separator'>
+      <hr>
     </div>
     <div class='subContainer information'>
       <div class='ingredients'>
@@ -49,6 +54,7 @@ export default {
       ingredients: [],
       instructions: [],
       userLink: undefined,
+      difficulty: ''
     }
   },
   async created() {
@@ -57,15 +63,41 @@ export default {
     this.ingredients = this.recipe.ingredients
     this.instructions = this.recipe.instructions
     this.userLink = `/user/${this.recipe.authorId}`
+
+    //  determine difficulty
+    let ans
+    switch (this.recipe.difficulty) {
+      case 1:
+        ans = 'Easy'
+        break
+      case 2:
+        ans = 'Intermediate'
+        break
+      case 3:
+        ans = 'Hard'
+        break
+      case 4:
+        ans = 'Gordon Ramsay'
+        break
+      default:
+        ans = 'Default'
+        break
+    }
+    this.difficulty = ans
   }
 }
 </script>
 
 <style lang='scss' scoped>
+.separator {
+  padding: 2rem 3rem 0;
+}
+
 .subContainer {
   display: grid;
   grid-gap: 2rem;
 }
+
 .hero {
   @media (min-width: 1200px) {
     grid-template-columns: 3fr 2fr;
@@ -83,22 +115,18 @@ export default {
 
 .recipeImg {
   margin: auto;
-  height: 60vh;
+  height: 50vh;
   background-color: white;
   border-radius: 20px;
-  @media (max-width: 900px) {
+  @media (max-width: 700px) {
     height: auto;
     width: 100%;
   }
 }
 
 .titleInfo {
-  > h1 {
-    padding: 1rem 0;
-  }
-
-  .author {
-    margin: 2rem 0;
+  > * {
+    padding: .5rem 0;
   }
 
   .profileImage {
