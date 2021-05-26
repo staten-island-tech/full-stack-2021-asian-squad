@@ -2,7 +2,7 @@ export default {
   target: 'server',
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'full-stack-2021-asian-squad',
+    title: 'Bone Apple Teeth',
     htmlAttrs: {
       lang: 'en'
     },

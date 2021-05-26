@@ -20,7 +20,7 @@
             src='@/assets/noProfilePic.png'
             alt=''
           />
-          {{ recipe.author.uname }}
+          <strong>{{ recipe.author.uname }}</strong>
         </vs-button>
       </div>
     </div>
