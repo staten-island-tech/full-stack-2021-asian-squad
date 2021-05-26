@@ -36,7 +36,7 @@
         />
         {{ recipeData.author.uname }}
       </vs-button>
-      <vs-button @click='deleteRecipe' v-if='isDeletable' danger><i class='bx bx-trash'></i></vs-button>
+      <vs-button @click='deleteRecipe' v-if='isDeletable' danger><i class='bx bx-trash'></i> &nbsp; Delete</vs-button>
     </template>
   </vs-card>
 </template>
@@ -79,7 +79,7 @@ export default {
             color: 'danger',
             title: 'Recipe Delete Error',
             text: error,
-            position: 'top-center',
+            position: 'top-center'
           })
         })
     }
